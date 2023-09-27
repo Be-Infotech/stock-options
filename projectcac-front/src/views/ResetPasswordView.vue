@@ -1,15 +1,16 @@
 <script>
 export default {
-  name: 'SignIn',
+  name: 'ResetPassword',
   data () {
     return {
       username: "",
-      password: ""
+      password: "",
+      newPasswordDefine : false
     }
   },
   methods : {
     showUsername(){
-      console.log("Username : ", this.password)
+      console.log("Username : ", this.username)
     }
   }
 }
@@ -20,15 +21,19 @@ export default {
     <div id="backgroundwrapper">
       <div id="signinwrapper">
         <div>
-          <h2>Log in</h2>
+          <h2>Reset password</h2>
         </div>
         <div id="inputwrapper">
-          <input id="username" type="text" v-model="username" placeholder="Username" >
-          <input id="password" type="password" v-model="password" placeholder="Password">
-          <p>Forget your Password? <router-link to="/resetPassword">Reset here</router-link></p>
+          <input id="username" type="text" v-model="username" placeholder="Username">
         </div>
         <div>
-          <button>Login Now</button>
+          <button>Send</button>
+        </div>
+        <div>
+          <p id="pNewPassword" v-if="newPasswordDefine">Your password : {{ password }}</p>
+        </div>
+        <div>
+          <a href="/">Login</a>
         </div>
       </div>
     </div>
@@ -100,8 +105,11 @@ export default {
   #inputwrapper p{
     font-size: 10px;
   }
-  #inputwrapper a{
+   a{
     text-decoration: none;
     color: #00CAE3;
+  }
+  #pNewPassword{
+    color: red;
   }
 </style>

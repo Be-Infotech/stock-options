@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import SignInView from "@/views/SignInView.vue";
+import ResetPasswordView from "@/views/ResetPasswordView.vue";
 
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
     path: '/',
     name: 'signin',
     component: SignInView
+  },
+  {
+    path: '/resetPassword',
+    name: 'resetPassword',
+    component: ResetPasswordView
   }
 ]
 
