@@ -84,7 +84,7 @@
         <div id="inputwrapper">
           <input id="username" type="text" v-model="username" placeholder="Username" required>
           <input id="password" type="password" v-model="password" placeholder="Password" required>
-          <p>Forget your password? <router-link to="/resetPassword">Reset here</router-link></p>
+          <p>Forget your password ? <router-link to="/resetPassword">Reset here</router-link></p>
         </div>
         <div>
           <button>Login now</button>
