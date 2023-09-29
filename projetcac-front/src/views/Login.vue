@@ -58,8 +58,8 @@
     background-color: #F3F4F6;
     margin-top: 8px;
     margin-bottom: 8px;
-    padding: 2px;
     font-size : 15px;
+    padding: 5px 40px;
   }
   #inputwrapper p{
     font-size: 15px;
