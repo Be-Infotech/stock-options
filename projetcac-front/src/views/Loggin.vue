@@ -32,8 +32,8 @@
     height: 365px;
   }
   form button{
-    width: 188px;
-    height: 28px;
+    width: 282px;
+    height: 42px;
     border-radius: 22.5px;
     border: none;
     outline: none;
@@ -50,8 +50,8 @@
     justify-content: center;
   }
   #inputwrapper input{
-    width: 188px;
-    height: 28px;
+    width: 282px;
+    height: 42px;
     border-radius: 22.5px;
     border: none;
     outline: none;
@@ -59,15 +59,19 @@
     margin-top: 8px;
     margin-bottom: 8px;
     padding: 2px;
-    font-size: 10px;
+    font-size : 15px;
   }
   #inputwrapper p{
-    font-size: 10px;
+    font-size: 15px;
   }
   #inputwrapper a{
     text-decoration: none;
     color: #00CAE3;
   }
+  ::-webkit-input-placeholder { text-align:center; }
+  ::-moz-placeholder { text-align:center; } /* firefox 19+ */
+  :-ms-input-placeholder { text-align:center; } /* ie */
+  input:-moz-placeholder { text-align:center; }
 </style>
 
 <template>
@@ -80,7 +84,7 @@
         <div id="inputwrapper">
           <input id="username" type="text" v-model="username" placeholder="Username" required>
           <input id="password" type="password" v-model="password" placeholder="Password" required>
-          <p>Forget your Password?<router-link to="/resetPassword"> Reset Here</router-link></p>
+          <p>Forget your Password? <router-link to="/resetPassword">Reset Here</router-link></p>
         </div>
         <div>
           <button>Login Now</button>
