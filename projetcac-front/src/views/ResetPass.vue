@@ -7,7 +7,7 @@
     align-items: center;
   }
   h2{
-    font-size: 20px;
+    font-size: 30px;
     color: #00CAE3;
   }
   #resetwrapper{
@@ -31,8 +31,8 @@
     margin: auto;
   }
   form button{
-    width: 188px;
-    height: 28px;
+    width: 282px;
+    height: 42px;
     border-radius: 22.5px;
     border:none;
     outline: none;
@@ -49,8 +49,8 @@
     justify-content: center;
   }
   #inputwrapper input{
-    width: 188px;
-    height: 28px;
+    width: 282px;
+    height: 42px;
     border-radius: 22.5px;
     border: none;
     outline: none;
@@ -58,10 +58,10 @@
     margin-top: 8px;
     margin-bottom: 8px;
     padding: 2px;
-    font-size: 10px;
+    font-size: 15px;
   }
   #inputwrapper p{
-    font-size: 10px;
+    font-size: 15px;
   }
  a{
     text-decoration: none;
