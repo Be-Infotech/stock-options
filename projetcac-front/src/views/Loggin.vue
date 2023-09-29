@@ -7,7 +7,7 @@
     align-items: center;
   }
   h2{
-    font-size: 20px;
+    font-size: 30px;
     color: #00CAE3;
   }
 
