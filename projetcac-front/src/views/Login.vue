@@ -87,7 +87,7 @@
           <p>Forget your password ? <router-link to="/resetPassword">Reset here</router-link></p>
         </div>
         <div>
-          <button>Login now</button>
+          <button>Log in now</button>
         </div>
       </form>
     </div>
