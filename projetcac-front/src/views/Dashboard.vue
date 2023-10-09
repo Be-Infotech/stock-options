@@ -25,20 +25,23 @@
       <Graphic title="Weekly evolution"/>
       <Graphic title="Monthly evolution"/>
       <Graphic title="Semi-annual evolution"/>
-
     </div>
-    <div id="tabWrapper"></div>
+    <div id="tabWrapper">
+      <Tableau title="Cours des actions"/>
+    </div>
   </div>
 </template>
 <script>
 import Head from "@/components/Head.vue";
 import Graphic from "@/components/Graphic.vue";
+import Tableau from "@/components/Tableau.vue";
 
 export default {
   name: "Dashboard",
   components: {
     Head,
-    Graphic
+    Graphic,
+    Tableau
   },
   data() {
     return {}
