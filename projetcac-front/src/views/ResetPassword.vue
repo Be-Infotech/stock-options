@@ -57,8 +57,8 @@ form button:hover{
   background-color: #F3F4F6;
   margin-top: 8px;
   margin-bottom: 8px;
-  padding: 2px;
   font-size: 15px;
+  padding: 5px 40px;
 }
 #inputwrapper p{
   font-size: 15px;
@@ -67,7 +67,10 @@ a{
   text-decoration: none;
   color: #00CAE3;
 }
-
+::-webkit-input-placeholder { text-align:center; }
+::-moz-placeholder { text-align:center; } /* firefox 19+ */
+:-ms-input-placeholder { text-align:center; } /* ie */
+input:-moz-placeholder { text-align:center; }
 </style>
 
 <template>
