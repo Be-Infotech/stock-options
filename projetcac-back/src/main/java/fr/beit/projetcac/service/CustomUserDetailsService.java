@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -25,4 +26,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getPassword(),
                 new ArrayList<>());
     }
+
+    public Optional<User> getByUsernameOrEmail(String usernameOrEmail) { return userRepository.findByUsernameOrMail(usernameOrEmail,usernameOrEmail);}
+
+    public void savePassword(User user){ userRepository.save(user);}
 }
