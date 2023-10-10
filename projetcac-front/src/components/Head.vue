@@ -7,7 +7,7 @@ export default {
 <template>
   <header>
     <router-link to="/dashboard"><img src="public/images/tableau-de-bord.png"></router-link>
-    <router-link to="/resetPassword"><img src="../../public/images/utilisateur.png"></router-link>
+    <router-link to="/profile"><img src="../../public/images/utilisateur.png"></router-link>
   </header>
 </template>
 
@@ -21,6 +21,7 @@ header{
   justify-content: end;
   align-items: center;
   padding: 10px;
+  margin-bottom: 50px;
 }
 img{
   width: 35px;
