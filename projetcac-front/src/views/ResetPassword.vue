@@ -67,12 +67,10 @@ a{
   text-decoration: none;
   color: #00CAE3;
 }
-
 ::-webkit-input-placeholder { text-align:center; }
 ::-moz-placeholder { text-align:center; } /* firefox 19+ */
 :-ms-input-placeholder { text-align:center; } /* ie */
 input:-moz-placeholder { text-align:center; }
-
 </style>
 
 <template>
