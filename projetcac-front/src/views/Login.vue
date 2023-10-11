@@ -77,7 +77,7 @@
 <template>
   <div id="pagewrapper">
     <div id="logginwrapper">
-      <form @submit.prevent="handleSubmit">
+      <form @submit.prevent="handleSubmit()">
         <div>
           <h2>Log in</h2>
         </div>
@@ -87,7 +87,7 @@
           <p>Forget your password ? <router-link to="/resetPassword" id="resetPassword">Reset here</router-link></p>
         </div>
         <div>
-          <button>Log in now</button>
+          <button id="submit">Log in now</button>
         </div>
       </form>
     </div>
@@ -95,6 +95,9 @@
 </template>
 
 <script>
+
+import {loginApi} from "@/api";
+
 export default {
   name: 'Loggin',
   data () {
@@ -105,11 +108,11 @@ export default {
   },
   methods: {
     handleSubmit(){
-      const data = {
-        username: this.username,
-        password: this.password
-      }
-    }
+      console.log('submit')
+      loginApi(this.username, this.password);
+    },
+
+
   }
 }
 </script>

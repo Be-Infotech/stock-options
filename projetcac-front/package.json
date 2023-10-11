@@ -13,6 +13,7 @@
     "@mdi/font": "7.0.96",
     "axios": "^1.5.1",
     "core-js": "^3.29.0",
+    "happy-dom": "^12.9.1",
     "nock": "^13.3.3",
     "roboto-fontface": "*",
     "vue": "^3.2.0",
