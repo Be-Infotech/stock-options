@@ -39,19 +39,8 @@ describe('Login', () => {
 
       inputUsername.setValue('loan')
       inputPassword.setValue('toto')
-      inputSubmit.trigger('click');
+      inputSubmit.trigger('submit');
 
       expect(loginApi).toHaveBeenCalledWith('loan', 'toto')
   })
-
-  it('click the submit button', async () => {
-    const form = mountTheForm().find('form')
-    // The spyOn function will report if the element
-    // has been clicked.
-    const spyOnForm = vi.spyOn(form, 'trigger')
-    await form.trigger('click')
-
-    expect(spyOnForm).toHaveBeenCalledOnce()
-  })
-
 })
