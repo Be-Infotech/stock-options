@@ -1,45 +1,24 @@
-import axios from "axios";
+import axios, {isAxiosError} from 'axios'; // Si vous utilisez ES6
 
-
-export  function loginApi(username: string, password: string): Promise<any> {
-  const url = "http://localhost:8080/user/signin";
+export function loginApi(prmUsername: string, prmPassword: string){
   const data = {
-    usernameOrMail: username,
-    password: password
+    usernameOrMail : prmUsername,
+    password : prmPassword
   }
-  return axios.post(url, data)
+  axios.post('http://localhost:8080/api/auth/signin',data)
     .then((response) => {
+      // Gérez la réponse de l'API ici
+      console.log('Réponse de l\'API :', response.data);
       return response.data;
     })
     .catch((error) => {
-      throw error;
+      if (isAxiosError<string>(error))
+        if (error.response?.status === 401) {
+          return "Erreur 401";
+        }
+      // Gérez les erreurs ici
+      console.error('Erreur lors de la requête API :', error);
+      return error;
     });
-}
 
-export function resetPasswordApi(username: string): Promise<any> {
-  const url = "http://localhost:8080/user/resetPassword";
-  const data = {
-    usernameOrMail: username
-  }
-  return axios.post(url, data)
-      .then((response) => {
-        return response.data;
-      })
-      .catch((error) => {
-        throw error;
-      });
-}
-
-
-export interface User {
-  username: string,
-  password: string,
-  firstName: string,
-  lastName: string,
-  mail: string,
-  address: string,
-  city: string,
-  country: string,
-  postalCode: string,
-  profilePhoto: string
 }
