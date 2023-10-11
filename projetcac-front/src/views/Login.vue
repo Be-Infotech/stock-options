@@ -84,10 +84,10 @@
         <div id="inputwrapper">
           <input id="username" type="text" v-model="username" placeholder="Username" required>
           <input id="password" type="password" v-model="password" placeholder="Password" required>
-          <p>Forget your password ? <router-link to="/resetPassword" id="resetPassword">Reset here</router-link></p>
+          <p>Forget your password ? <RouterLink to="/resetPassword">Reset here</RouterLink></p>
         </div>
         <div>
-          <button id="submit">Log in now</button>
+          <button id="submit" type="submit">Log in now</button>
         </div>
       </form>
     </div>
@@ -99,7 +99,6 @@
 import {loginApi} from "@/api";
 
 export default {
-  name: 'Loggin',
   data () {
     return {
       username: "",
@@ -108,11 +107,8 @@ export default {
   },
   methods: {
     handleSubmit(){
-      console.log('submit')
       loginApi(this.username, this.password);
     },
-
-
   }
 }
 </script>
