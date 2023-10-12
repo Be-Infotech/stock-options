@@ -14,10 +14,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.SecureRandom;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -34,16 +36,10 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
-    @GetMapping("/")
-    public ResponseEntity<List<User>> test(){
-       List<User> user =  userRepository.findAll();
-        return new ResponseEntity<>(user,HttpStatus.OK);
-    }
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<Optional<User>> authenticateUser(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDto.getUsernameOrMail(),loginDto.getPassword()
+                loginDto.getUsernameOrMail(), loginDto.getPassword()
         ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         if (authentication.isAuthenticated()) {
@@ -51,7 +47,7 @@ public class AuthController {
             Optional<User> userData = customUserDetailsService.getByUsernameOrEmail(userDetails.getUsername());
             return new ResponseEntity<>(userData, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -61,7 +57,7 @@ public class AuthController {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             String password = "1234"; //fonction pour générer un password à ajouter
-            user.setPassword(passwordEncoder.encode(password));
+            user.setPassword(password);
             customUserDetailsService.savePassword(user);
             return new ResponseEntity<>(password, HttpStatus.OK);
         }

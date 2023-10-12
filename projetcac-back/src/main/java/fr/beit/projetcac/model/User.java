@@ -1,9 +1,9 @@
 package fr.beit.projetcac.model;
-
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Value;
 
-@Data
+
+@Value
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"username"}),
@@ -15,34 +15,24 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-
     @Column(name = "username")
     private String username;
-
     @Column(name = "password")
     private String password;
-
     @Column(name = "mail")
     private String mail;
-
     @Column(name = "first_name")
     private String firstName;
-
     @Column(name = "last_name")
     private String lastName;
-
     @Column(name = "profile_photo")
     private String profilePhoto;
-
     @Column(name = "city")
     private String city;
-
     @Column(name = "address")
     private String address;
-
     @Column(name = "country")
     private String country;
-
     @Column(name = "postalCode")
     private String postalCode;
 

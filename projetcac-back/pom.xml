@@ -2,21 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <artifactId>ProjetCac</artifactId>
+  <name>ProjetCac Child Pom</name>
+  <packaging>jar</packaging>
   <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.1.4</version>
+    <groupId>fr.beit</groupId>
+    <artifactId>projetcac</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-  <groupId>fr.beit</groupId>
-  <artifactId>projetcac</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>projetcac</name>
-  <description>Demo project for Spring Boot</description>
-  <properties>
-    <java.version>17</java.version>
-    <start-class>fr.beit.projetcac.ProjetCacApplication</start-class>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -26,7 +20,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
@@ -62,21 +55,4 @@
       <version>0.9.1</version>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-            </exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
