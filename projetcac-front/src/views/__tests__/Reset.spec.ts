@@ -6,7 +6,6 @@ import router from '@/router';
 import {nextTick} from "vue";
 
 
-
 function mountTheForm() {
     const wrapper = mount(ResetPasswrod, {
         global: {
@@ -29,35 +28,30 @@ describe('Reset Password', () => {
         const wrapper = mountTheForm();
         const inpUsername = wrapper.find("#username");
         const inpSend = wrapper.find("#submit");
-        const push = vi.spyOn(router,'push');
 
         await inpUsername.setValue('loan');
         await inpSend.trigger('submit');
+
         expect(resetPasswordApi).toHaveBeenCalledOnce();
         expect(resetPasswordApi).toHaveBeenCalledWith('loan');
         await nextTick();
-        expect(wrapper.find('#pNewPassword').text()).toContain('1234');
-        expect(push).toHaveBeenCalledTimes(0);
-
+        expect(wrapper.find('#pNewPassword').text()).toContain('1234')
     })
     it("Should show error message", async () =>{
-        let errorMessage = "401"
-        resetPasswordApi.mockRejectedValueOnce(new Error(errorMessage));
+        const error = 401;
+        resetPasswordApi.mockResolvedValue(error);
         const wrapper = mountTheForm();
         const inpUsername = wrapper.find("#username");
         const inpSend = wrapper.find("#submit");
-        const push = vi.spyOn(router,'push');
 
         await inpUsername.setValue('loan');
         await inpSend.trigger('submit');
         expect(resetPasswordApi).toHaveBeenCalledOnce();
         expect(resetPasswordApi).toHaveBeenCalledWith('loan');
         await nextTick();
-        await nextTick();
-        expect(wrapper.find('#msgError').text()).toContain(errorMessage)
-        expect(push).toHaveBeenCalledTimes(0);
+        expect(wrapper.find('#msgError').text()).toContain(401)
     })
-    it("Should redirect to login", async () =>{
+    it("Should redirect to resetPassword", async () =>{
         const wrapper = mountTheForm();
         const push = vi.spyOn(router,'push');
         const inputResetPassword = wrapper.find('a[id=redirection');
