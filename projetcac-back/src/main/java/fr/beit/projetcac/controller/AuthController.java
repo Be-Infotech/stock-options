@@ -5,6 +5,7 @@ import fr.beit.projetcac.payload.LoginDto;
 import fr.beit.projetcac.payload.ResetPasswordDto;
 import fr.beit.projetcac.repository.UserRepository;
 import fr.beit.projetcac.service.CustomUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,44 +25,42 @@ import java.util.Optional;
 import java.util.Random;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @PostMapping("/signin")
-    public ResponseEntity<Optional<User>> authenticateUser(@RequestBody LoginDto loginDto) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDto.getUsernameOrMail(), loginDto.getPassword()
-        ));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        if (authentication.isAuthenticated()) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            Optional<User> userData = customUserDetailsService.getByUsernameOrEmail(userDetails.getUsername());
-            return new ResponseEntity<>(userData, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
+    public ResponseEntity<User> authenticateUser(@RequestBody LoginDto loginDto) {
+        return customUserDetailsService.getByUsernameOrEmail(loginDto.getUsernameOrMail())
+                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
+
     }
 
     @PostMapping("/resetPassword")
-    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto) {
-        Optional<User> optionalUser = customUserDetailsService.getByUsernameOrEmail(resetPasswordDto.getUsernameOrMail());
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            String password = "1234"; //fonction pour générer un password à ajouter
-            user.setPassword(password);
-            customUserDetailsService.savePassword(user);
-            return new ResponseEntity<>(password, HttpStatus.OK);
-        }
-        return new ResponseEntity<>("User not found with username or email : " + resetPasswordDto.getUsernameOrMail(), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto) {
+        return customUserDetailsService.getByUsernameOrEmail(resetPasswordDto.getUsernameOrMail())
+                .map(user -> {
+                    String password = "1234"; //fonction pour générer un password à ajouter
+                    var newUser = new User(
+                            user.getId(),
+                            user.getUsername(),
+                            user.getPassword(),
+                            user.getMail(),
+                            user.getFirstName(),
+                            user.getLastName(),
+                            user.getProfilePhoto(),
+                            user.getCity(),
+                            user.getAddress(),
+                            user.getCountry(),
+                            user.getPostalCode()
+                    );
+                    customUserDetailsService.savePassword(newUser);
+                    return new ResponseEntity<>(password, HttpStatus.OK);
+                })
+                .orElse(new ResponseEntity<>("User not found with username or email : " + resetPasswordDto.getUsernameOrMail(), HttpStatus.UNAUTHORIZED));
     }
 }
 
