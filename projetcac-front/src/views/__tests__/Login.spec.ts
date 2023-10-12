@@ -1,46 +1,86 @@
 import {describe, it, expect, vi, SpyInstance, beforeEach} from 'vitest';
-import { mount } from '@vue/test-utils';
-import {User} from "../../api/api";
+import {flushPromises, mount} from '@vue/test-utils';
+import { User } from "../../api/api";
 import * as api from "../../api/api";
 import Login from '@/views/Login.vue'
+import router from '@/router';
+import {nextTick} from "vue";
+import {exec} from "child_process";
 
-function mountTheForm () {
-  const wrapper = mount(Login, { props: {} })
-  return wrapper
+function mountTheForm() {
+    const wrapper = mount(Login, {
+        global: {
+            plugins: [router]
+        }
+    })
+    return wrapper
 }
 
 describe('Login', () => {
 
-  let loginApi: SpyInstance<[username: string, password: string], Promise<User>>;
-  beforeEach(() => {
-      const data : User = {
-          username: "loan",
-          password: "loan",
-          firstName: "loan",
-          lastName: "Heniart",
-          mail: "loan@gmail.com",
-          address: "1 rue national",
-          city: "Bethune",
-          country: 'France',
-          postalCode: "62400",
-          profilePhoto:  ""
-      };
-
-    loginApi = vi.spyOn(api, 'loginApi').mockResolvedValue(data)
-  })
+    let loginApi: SpyInstance<[username: string, password: string], Promise<User|string>>;
+    beforeEach(() => {
+        loginApi = vi.spyOn(api, 'loginApi')
+    })
 
 
-  it('Submit login', () => {
 
-      const wrapper = mount(Login);
-      const inputUsername = wrapper.find("#username");
-      const inputPassword = wrapper.find('#password');
-      const inputSubmit = wrapper.find("#submit")
+    it('Should allow connection', async () => {
+        const data: User = {
+            username: "loan",
+            password: "loan",
+            firstName: "loan",
+            lastName: "Heniart",
+            mail: "loan@gmail.com",
+            address: "1 rue national",
+            city: "Bethune",
+            country: 'France',
+            postalCode: "62400",
+            profilePhoto: ""
+        }
+        loginApi.mockResolvedValue(data)
+        const wrapper = mount(Login);
+        const inputUsername = wrapper.find("#username");
+        const inputPassword = wrapper.find('#password');
+        const inputSubmit = wrapper.find("#submit")
+        const push = vi.spyOn(router, 'push');
 
-      inputUsername.setValue('loan')
-      inputPassword.setValue('toto')
-      inputSubmit.trigger('submit');
+        await inputUsername.setValue('loan')
+        await inputPassword.setValue('toto')
+        await inputSubmit.trigger('submit');
 
-      expect(loginApi).toHaveBeenCalledWith('loan', 'toto')
-  })
+        expect(loginApi).toHaveBeenCalledWith('loan', 'toto')
+        expect(push).toHaveBeenCalledOnce();
+        expect(push).toHaveBeenCalledWith('/dashboard')
+
+    })
+    it('should not allow connection', async () =>{
+        const error: string = "error"
+        loginApi.mockResolvedValue(error)
+
+        const wrapper = mountTheForm();
+        const inputUsername = wrapper.find("#username");
+        const inputPassword = wrapper.find('#password');
+        const inputSubmit = wrapper.find("#submit")
+
+        await inputUsername.setValue('loan')
+        await inputPassword.setValue('toto')
+        await inputSubmit.trigger('submit');
+        expect(loginApi).toHaveBeenCalledWith('loan', 'toto')
+        await nextTick()
+        const textError = wrapper.find("#msgError") ;
+        expect(textError.text()).toContain("error")
+    })
+    it("Should redirect to resetPassword", async () =>{
+        const wrapper = mountTheForm();
+        const push = vi.spyOn(router,'push');
+        const inputResetPassword = wrapper.find('a[id=redirection');
+
+        await  inputResetPassword.trigger('click');
+
+        expect(push).toHaveBeenCalledOnce();
+        expect(push).toHaveBeenCalledWith('/resetPassword')
+    })
 })
+
+
