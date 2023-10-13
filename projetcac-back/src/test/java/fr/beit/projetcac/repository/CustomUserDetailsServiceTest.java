@@ -2,50 +2,63 @@ package fr.beit.projetcac.repository;
 
 import fr.beit.projetcac.model.User;
 import fr.beit.projetcac.service.CustomUserDetailsService;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.test.context.junit4.SpringRunner;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CustomUserDetailsServiceTest {
 
 
-
     @Mock
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
+    @InjectMocks
+    CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    @Nested
+    class getByUsernameOrEmail {
+        @Test
+        void shouldReturnUser_whenKnownInDatabase(){
+            var expectedUser = Optional.of(new User(
+                    1,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+            ));
 
-    @BeforeEach
-    public void setUp() {
-        final User user = new User(
-                1, "test", "1234", "test@mail.com", "", "", "", "", "", "", ""
-        );
+            when(userRepository.findByUsernameOrMail("toto", "toto"))
+                    .thenReturn(expectedUser);
 
-        Mockito.when(userRepository.findByUsernameOrMail(user.getUsername(), user.getMail()))
-                .thenReturn(Optional.of(user));
+            assertEquals(expectedUser, customUserDetailsService.getByUsernameOrEmail("toto"));
+        }
+
+        @Test
+        void shouldReturnEmpty_whenNotKnownInDatabase(){
+            var expectedUser = Optional.<User>empty();
+
+            when(userRepository.findByUsernameOrMail("toto", "toto"))
+                    .thenReturn(expectedUser);
+
+            assertEquals(expectedUser, customUserDetailsService.getByUsernameOrEmail("toto"));
+        }
     }
-
-    @Test
-    public void test() {
-        final String username = "test";
-
-        final UserDetails userBDD = this.customUserDetailsService.loadUserByUsername(username);
-        userBDD.getUsername();assertEquals(username,userBDD.getUsername());
-    }
-
 }
