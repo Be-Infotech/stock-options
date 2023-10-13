@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -20,10 +21,17 @@ public class UserRepositoryTest {
     @Test
     public void test() {
         userRepository.save(new User(
-                1,"","","","","","","","","",""
+                1,"test1","","test1@mail.com","","","","","","",""
         ));
 
         assertEquals(1, userRepository.findAll().size());
+        userRepository.save(new User(
+                2,"test2","","test2@mail.com","","","","","","",""
+        ));
+        assertTrue(userRepository.findById(1).isPresent());
+        assertTrue(userRepository.findByMail("test1@mail.com").isPresent());
+        assertTrue(userRepository.findByUsername("test2").isPresent());
+        assertTrue(userRepository.findByUsernameOrMail("test2","test2").isPresent());
     }
 }
 
