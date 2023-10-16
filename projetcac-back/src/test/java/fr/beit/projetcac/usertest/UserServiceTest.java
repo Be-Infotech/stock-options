@@ -9,9 +9,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import reactor.test.StepVerifier;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,6 +34,8 @@ public class UserServiceTest {
     @Mock
     PasswordEncoder passwordEncoder;
     @Mock
+    AuthenticationManager authenticationManager;
+    @Mock
     UserRepository userRepository;
 
     @InjectMocks
@@ -34,12 +44,12 @@ public class UserServiceTest {
     @Nested
     class authenticateUser {
         @Test
-        void shouldReturnUser_whenKnownInDatabase(){
+        void shouldReturnUser_whenKnownInDatabase() {
             var expectedUser = Optional.of(new User(
                     1,
+                    "toto",
                     "",
-                    "",
-                    "",
+                    "toto@mail.com",
                     "",
                     "",
                     "",
@@ -49,31 +59,48 @@ public class UserServiceTest {
                     ""
             ));
 
-            when(userRepository.findByUsernameOrMail("toto", "toto"))
+            UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+                    "toto",
+                    "1234",
+                    new ArrayList<>()
+            );
+
+            when(authenticationManager.authenticate(any()))
+                    .thenReturn(new UsernamePasswordAuthenticationToken(userDetails,"1234", userDetails.getAuthorities()));
+
+            when(userRepository.findByUsernameOrMail("toto","toto"))
                     .thenReturn(expectedUser);
 
-            assertEquals(expectedUser, userService.authenticateUser("toto","1234"));
+            assertEquals(expectedUser, userService.authenticateUser("toto","toto"));
         }
 
         @Test
-        void shouldReturnEmpty_whenNotKnownInDatabase(){
+        void shouldReturnEmpty_whenNotKnownInDatabase() {
             var expectedUser = Optional.<User>empty();
+            UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+                    "toto",
+                    "1234",
+                    new ArrayList<>()
+            );
 
-            when(userRepository.findByUsernameOrMail("toto", "toto"))
+            when(authenticationManager.authenticate(any()))
+                    .thenReturn(new UsernamePasswordAuthenticationToken(userDetails,"1234", userDetails.getAuthorities()));
+
+            when(userRepository.findByUsernameOrMail("toto","toto"))
                     .thenReturn(expectedUser);
 
-            assertEquals(expectedUser, userService.authenticateUser("toto","1234"));
+            assertEquals(expectedUser, userService.authenticateUser("toto", "1234"));
         }
     }
 
     @Nested
-    class savePassword{
+    class savePassword {
         @Test
-        void shouldReturnNothing_whenSaveInDataBase(){
+        void shouldReturnNothing_whenSaveInDataBase() {
             var expectedUser = new User(
                     2,
                     "test",
-                    "1234",
+                    "newPassword",
                     "test@mail.com",
                     "",
                     "",
@@ -84,13 +111,26 @@ public class UserServiceTest {
                     ""
             );
 
-            when(userRepository.save(any()))
+            when(userRepository.save(new User(
+                            2,
+                            "test",
+                            "newPassword",
+                            "test@mail.com",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            ""
+                    ))
+            )
                     .thenReturn(expectedUser);
 
             when(passwordEncoder.encode("1234"))
                     .thenReturn("newPassword");
 
-            when(userRepository.findByUsernameOrMail("test","test"))
+            when(userRepository.findByUsernameOrMail("test", "test"))
                     .thenReturn(Optional.of(expectedUser));
 
             StepVerifier.create(userService.savePassword("test"))

@@ -42,7 +42,8 @@ public class UserRepositoryTest {
                 2,"test2","","test2@mail.com","","","","","","",""
         ));
 
-        assertEquals(user1, userRepository.findById(1).get());
+
+        assertEquals(user1,userRepository.findById(1).get());
     }
 }
 

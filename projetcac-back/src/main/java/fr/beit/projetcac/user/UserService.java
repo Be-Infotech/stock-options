@@ -52,21 +52,6 @@ public class UserService {
             return Optional.empty();
     }
 
-   /* public String savePassword(String usernameOrMail){
-        Optional<User> optionalUser = userRepository.findByUsernameOrMail(usernameOrMail, usernameOrMail);
-        if (optionalUser.isPresent()){
-          User user = optionalUser.get();
-          String password = "1234";
-          user.setPassword(passwordEncoder.encode(password));
-            userRepository.save(user);
-            return password;
-        }
-        else {
-            return "";
-        }
-    }
-
-    */
 
     public Mono<String> savePassword(String usernameOrMail){
        return Mono.justOrEmpty(userRepository.findByUsernameOrMail(usernameOrMail,usernameOrMail))
