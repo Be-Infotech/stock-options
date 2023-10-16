@@ -15,6 +15,10 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+
+    //Pas authentifié
+    //Authentifié et connu en base
 
     public Optional<User> authenticateUser(String username, String password) {
 

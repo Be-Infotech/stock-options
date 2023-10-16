@@ -27,7 +27,7 @@ public class UserServiceTest {
     UserService userService;
 
     @Nested
-    class getByUsernameOrEmail {
+    class authenticateUser {
         @Test
         void shouldReturnUser_whenKnownInDatabase(){
             var expectedUser = Optional.of(new User(
@@ -60,6 +60,7 @@ public class UserServiceTest {
             assertEquals(expectedUser, userService.authenticateUser("toto"));
         }
     }
+
     @Nested
     class savePassword{
         @Test
@@ -77,6 +78,7 @@ public class UserServiceTest {
                     "",
                     ""
             );
+
             when(userRepository.save(expectedUser))
                     .thenReturn(expectedUser);
 

@@ -18,19 +18,31 @@ public class UserRepositoryTest {
     UserRepository userRepository;
 
     @Test
-    public void test() {
-        userRepository.save(new User(
+    public void findByUsernameOrMail() {
+        var user1 = userRepository.save(new User(
                 1,"test1","","test1@mail.com","","","","","","",""
         ));
 
-        assertEquals(1, userRepository.findAll().size());
-        userRepository.save(new User(
+        var user2 = userRepository.save(new User(
                 2,"test2","","test2@mail.com","","","","","","",""
         ));
 
         assertEquals(user2, userRepository.findByUsernameOrMail(null,"test2@mail.com").get());
         assertEquals(user1, userRepository.findByUsernameOrMail("test1",null).get());
         assertTrue(userRepository.findByUsernameOrMail(null,null).isEmpty());
+    }
+
+    @Test
+    public void findById() {
+        var user1 = userRepository.save(new User(
+                1,"test1","","test1@mail.com","","","","","","",""
+        ));
+
+        var user2 = userRepository.save(new User(
+                2,"test2","","test2@mail.com","","","","","","",""
+        ));
+
+        assertEquals(user1, userRepository.findById(1).get());
     }
 }
 
