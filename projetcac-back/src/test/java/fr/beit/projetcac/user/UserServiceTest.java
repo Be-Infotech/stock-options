@@ -47,7 +47,7 @@ public class UserServiceTest {
             when(userRepository.findByUsernameOrMail("toto", "toto"))
                     .thenReturn(expectedUser);
 
-            assertEquals(expectedUser, userService.authenticateUser("toto"));
+            assertEquals(expectedUser, userService.authenticateUser("toto","1234"));
         }
 
         @Test
@@ -57,7 +57,7 @@ public class UserServiceTest {
             when(userRepository.findByUsernameOrMail("toto", "toto"))
                     .thenReturn(expectedUser);
 
-            assertEquals(expectedUser, userService.authenticateUser("toto"));
+            assertEquals(expectedUser, userService.authenticateUser("toto","1234"));
         }
     }
 

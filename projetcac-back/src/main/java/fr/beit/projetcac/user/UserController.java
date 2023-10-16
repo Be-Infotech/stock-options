@@ -28,16 +28,9 @@ public class UserController {
     }
 
     @PostMapping("/resetPassword")
-    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto) {
-        Optional<User> optionalUser = userService.authenticateUser(resetPasswordDto.getUsernameOrMail());
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            String password = "1234"; //fonction pour générer un password à ajouter
-            user.setPassword(password);
-            userService.savePassword(user);
-            return new ResponseEntity<>(password, HttpStatus.OK);
-        }
-        return new ResponseEntity<>("User not found with username or email : " + resetPasswordDto.getUsernameOrMail(), HttpStatus.UNAUTHORIZED);
+    public  Mono<String> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto){
+        return Mono.justOrEmpty(userService.savePassword(resetPasswordDto.getUsernameOrMail()))
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED)));
     }
 
     @Value
@@ -45,7 +38,6 @@ public class UserController {
         String usernameOrMail;
         String password;
     }
-
     @Value
     public static class ResetPasswordDto {
         String usernameOrMail;
