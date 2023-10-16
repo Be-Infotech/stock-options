@@ -1,7 +1,6 @@
 package fr.beit.projetcac.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -9,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -52,7 +52,7 @@ public class UserService {
             return Optional.empty();
     }
 
-    public String savePassword(String usernameOrMail){
+   /* public String savePassword(String usernameOrMail){
         Optional<User> optionalUser = userRepository.findByUsernameOrMail(usernameOrMail, usernameOrMail);
         if (optionalUser.isPresent()){
           User user = optionalUser.get();
@@ -64,5 +64,26 @@ public class UserService {
         else {
             return "";
         }
+    }
+
+    */
+
+    public Mono<String> savePassword(String usernameOrMail){
+       return Mono.justOrEmpty(userRepository.findByUsernameOrMail(usernameOrMail,usernameOrMail))
+               .map(user -> new User(
+                       user.getId(),
+                       user.getUsername(),
+                       passwordEncoder.encode("1234"),
+                       user.getMail(),
+                       user.getFirstName(),
+                       user.getLastName(),
+                       user.getProfilePhoto(),
+                       user.getCity(),
+                       user.getAddress(),
+                       user.getCountry(),
+                       user.getPostalCode()
+               ))
+               .flatMap(user -> Mono.justOrEmpty(userRepository.save(user)))
+               .map(User::getPassword);
     }
 }

@@ -1,4 +1,4 @@
-package fr.beit.projetcac.user;
+package fr.beit.projetcac.usertest;
 
 import fr.beit.projetcac.user.User;
 import fr.beit.projetcac.user.UserRepository;

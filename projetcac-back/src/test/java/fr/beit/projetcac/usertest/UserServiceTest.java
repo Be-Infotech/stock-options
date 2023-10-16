@@ -1,18 +1,21 @@
-package fr.beit.projetcac.user;
+package fr.beit.projetcac.usertest;
 
 import fr.beit.projetcac.user.User;
-import fr.beit.projetcac.user.UserService;
 import fr.beit.projetcac.user.UserRepository;
+import fr.beit.projetcac.user.UserService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import reactor.test.StepVerifier;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -20,6 +23,8 @@ import static org.mockito.Mockito.when;
 public class UserServiceTest {
 
 
+    @Mock
+    PasswordEncoder passwordEncoder;
     @Mock
     UserRepository userRepository;
 
@@ -79,10 +84,18 @@ public class UserServiceTest {
                     ""
             );
 
-            when(userRepository.save(expectedUser))
+            when(userRepository.save(any()))
                     .thenReturn(expectedUser);
 
-            userService.savePassword(expectedUser);
+            when(passwordEncoder.encode("1234"))
+                    .thenReturn("newPassword");
+
+            when(userRepository.findByUsernameOrMail("test","test"))
+                    .thenReturn(Optional.of(expectedUser));
+
+            StepVerifier.create(userService.savePassword("test"))
+                    .expectNext("newPassword")
+                    .verifyComplete();
         }
     }
 }
