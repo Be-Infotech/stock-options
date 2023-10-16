@@ -1,7 +1,8 @@
-package fr.beit.projetcac.repository;
+package fr.beit.projetcac.user;
 
-import fr.beit.projetcac.model.User;
-import fr.beit.projetcac.service.CustomUserDetailsService;
+import fr.beit.projetcac.user.User;
+import fr.beit.projetcac.user.UserService;
+import fr.beit.projetcac.user.UserRepository;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,14 +17,14 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-public class CustomUserDetailsServiceTest {
+public class UserServiceTest {
 
 
     @Mock
     UserRepository userRepository;
 
     @InjectMocks
-    CustomUserDetailsService customUserDetailsService;
+    UserService userService;
 
     @Nested
     class getByUsernameOrEmail {
@@ -47,7 +47,7 @@ public class CustomUserDetailsServiceTest {
             when(userRepository.findByUsernameOrMail("toto", "toto"))
                     .thenReturn(expectedUser);
 
-            assertEquals(expectedUser, customUserDetailsService.getByUsernameOrEmail("toto"));
+            assertEquals(expectedUser, userService.authenticateUser("toto"));
         }
 
         @Test
@@ -57,7 +57,7 @@ public class CustomUserDetailsServiceTest {
             when(userRepository.findByUsernameOrMail("toto", "toto"))
                     .thenReturn(expectedUser);
 
-            assertEquals(expectedUser, customUserDetailsService.getByUsernameOrEmail("toto"));
+            assertEquals(expectedUser, userService.authenticateUser("toto"));
         }
     }
     @Nested
@@ -78,7 +78,9 @@ public class CustomUserDetailsServiceTest {
                     ""
             );
             when(userRepository.save(expectedUser))
-                    .doNothing();
+                    .thenReturn(expectedUser);
+
+            userService.savePassword(expectedUser);
         }
     }
 }

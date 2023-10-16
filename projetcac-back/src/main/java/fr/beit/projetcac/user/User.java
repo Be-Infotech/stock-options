@@ -1,4 +1,4 @@
-package fr.beit.projetcac.model;
+package fr.beit.projetcac.user;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
