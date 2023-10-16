@@ -11,21 +11,12 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService{
 
     private final UserRepository userRepository;
 
     public CustomUserDetailsService(UserRepository userRepository){this.userRepository = userRepository;}
 
-    @Override
-    public UserDetails loadUserByUsername(String usernameOrMail) throws UsernameNotFoundException{
-        User user = userRepository.findByUsernameOrMail(usernameOrMail, usernameOrMail)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found with username or email: " + usernameOrMail));
-        return new org.springframework.security.core.userdetails.User(user.getMail(),
-                user.getPassword(),
-                new ArrayList<>());
-    }
 
     public Optional<User> getByUsernameOrEmail(String usernameOrEmail) { return userRepository.findByUsernameOrMail(usernameOrEmail,usernameOrEmail);}
 

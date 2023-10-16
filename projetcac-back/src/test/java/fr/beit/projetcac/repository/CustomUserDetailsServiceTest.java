@@ -61,17 +61,24 @@ public class CustomUserDetailsServiceTest {
         }
     }
     @Nested
-    class loadUserByUsername{
+    class savePassword{
         @Test
-        void shouldReturnUserDetails_whenKnowInDatabase(){
-            var execptedUserDetails = new org.springframework.security.core.userdetails.User("toto",
+        void shouldReturnNothing_whenSaveInDataBase(){
+            var expectedUser = new User(
+                    2,
+                    "test",
                     "1234",
-                    new ArrayList<>());
-
-            when(userRepository.findByUsernameOrMail("toto","1234"))
-                    .thenReturn(execptedUserDetails);
-
-            assertEquals(execptedUserDetails, customUserDetailsService.loadUserByUsername("toto"));
+                    "test@mail.com",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+            );
+            when(userRepository.save(expectedUser))
+                    .doNothing();
         }
     }
 }
