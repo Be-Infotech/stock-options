@@ -2,15 +2,14 @@ package fr.beit.projetcac.repository;
 
 import fr.beit.projetcac.model.User;
 import fr.beit.projetcac.service.CustomUserDetailsService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -59,6 +58,20 @@ public class CustomUserDetailsServiceTest {
                     .thenReturn(expectedUser);
 
             assertEquals(expectedUser, customUserDetailsService.getByUsernameOrEmail("toto"));
+        }
+    }
+    @Nested
+    class loadUserByUsername{
+        @Test
+        void shouldReturnUserDetails_whenKnowInDatabase(){
+            var execptedUserDetails = new org.springframework.security.core.userdetails.User("toto",
+                    "1234",
+                    new ArrayList<>());
+
+            when(userRepository.findByUsernameOrMail("toto","1234"))
+                    .thenReturn(execptedUserDetails);
+
+            assertEquals(execptedUserDetails, customUserDetailsService.loadUserByUsername("toto"));
         }
     }
 }
