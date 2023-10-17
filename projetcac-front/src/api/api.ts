@@ -1,59 +1,38 @@
-export function loginApi(username: string, password: string) : Promise<User|string> {
+import axios from "axios";
 
-  const data : User = {
-    username: "loan",
-    password: "loan",
-    firstName: "loan",
-    lastName: "Heniart",
-    mail: "loan@gmail.com",
-    address: "1 rue national",
-    city: "Bethune",
-    country: 'France',
-    postalCode: "62400",
-    profilePhoto:  ""
-  };
-  const error : string = 'error fail'
 
-  console.log(data)
-
-  return Promise.resolve(data);
-
-  /*
-  axios.post('http://localhost:8080/api/auth/signin',data)
+export  function loginApi(username: string, password: string): Promise<any> {
+  const url = "http://localhost:8080/user/signin";
+  const data = {
+    usernameOrMail: username,
+    password: password
+  }
+  return axios.post(url, data)
     .then((response) => {
-      // Gérez la réponse de l'API ici
-      console.log('Réponse de l\'API :', response.data);
-      return response.data;
+      return Promise.resolve(response.data);
     })
     .catch((error) => {
-      if (isAxiosError<string>(error))
-        if (error.response?.status === 401) {
-          return "Erreur 401";
-        }
-      // Gérez les erreurs ici
-      console.error('Erreur lors de la requête API :', error);
-      return error;
-    });*/
-
+      throw error;
+    });
 }
 
-export function resetPasswordApi(Username :string) : Promise<Number|string>{
+export function resetPasswordApi(Username: string): Promise<Number | string> {
   const error = 401;
   const password = "1234"
 
-    return Promise.resolve(error)
+  return Promise.resolve(error)
 }
 
 
 export interface User {
-      username: string,
-      password: string,
-      firstName: string,
-      lastName: string,
-      mail: string,
-      address: string,
-      city: string,
-      country: string,
-      postalCode: string,
-      profilePhoto: string
+  username: string,
+  password: string,
+  firstName: string,
+  lastName: string,
+  mail: string,
+  address: string,
+  city: string,
+  country: string,
+  postalCode: string,
+  profilePhoto: string
 }

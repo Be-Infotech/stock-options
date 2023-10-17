@@ -2,10 +2,11 @@ import {describe, it, expect, vi, SpyInstance, beforeEach} from 'vitest';
 import {flushPromises, mount} from '@vue/test-utils';
 import { User } from "../../api/api";
 import * as api from "../../api/api";
-import Login from '@/views/Login.vue'
+import Login from '@/views/Login.vue';
 import router from '@/router';
 import {nextTick} from "vue";
-import {exec} from "child_process";
+import {types} from "sass";
+import Error = types.Error;
 
 function mountTheForm() {
     const wrapper = mount(Login, {
@@ -18,7 +19,8 @@ function mountTheForm() {
 
 describe('Login', () => {
 
-    let loginApi: SpyInstance<[username: string, password: string], Promise<User|string>>;
+    let loginApi: SpyInstance<[username: string, password: string], Promise<any>>;
+
     beforeEach(() => {
         loginApi = vi.spyOn(api, 'loginApi')
     })
@@ -55,9 +57,8 @@ describe('Login', () => {
 
     })
     it('should not allow connection', async () =>{
-        const error: string = "error"
-        loginApi.mockResolvedValue(error)
-
+        const errorMessage = "Connection refused";
+        loginApi.mockResolvedValue(errorMessage);
         const wrapper = mountTheForm();
         const inputUsername = wrapper.find("#username");
         const inputPassword = wrapper.find('#password');
@@ -69,7 +70,8 @@ describe('Login', () => {
         expect(loginApi).toHaveBeenCalledWith('loan', 'toto')
         await nextTick()
         const textError = wrapper.find("#msgError") ;
-        expect(textError.text()).toContain("error")
+        expect(textError.exists())
+        expect(textError.text()).toContain("Connection refused")
     })
     it("Should redirect to resetPassword", async () =>{
         const wrapper = mountTheForm();

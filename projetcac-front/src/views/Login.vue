@@ -107,7 +107,7 @@ input:-moz-placeholder {
         <div id="inputwrapper">
           <input id="username" type="text" v-model="username" placeholder="Username" required>
           <input id="password" type="password" v-model="password" placeholder="Password" required>
-            <p id="msgError" v-if="error">{{ error }}</p>
+          <p id="msgError" v-if="error">{{ error }}</p>
           <p>Forget your password ?
             <RouterLink id="redirection" to="/resetPassword">Reset here</RouterLink>
           </p>
@@ -129,26 +129,34 @@ import router from "@/router";
 export default {
   data() {
     return {
-        username: "",
-        password: "",
-        error: ""
+      username: "",
+      password: "",
+      error : "",
     }
   },
   methods: {
     handleSubmit() {
-     const response = loginApi(this.username, this.password);
-      response
-          .then(data =>{
-            if (typeof data === "string"){
-              this.error = data
-            }
-            else if (typeof data === "object"){
-               router.push('/dashboard')
-            }
+      // loginApi(this.username, this.password)
+      //     .then((response) => {
+      //       console.log(response)
+      //       router.push("/dashboard")
+      //     })
+      //     .catch((error) => {
+      //       this.error = "Connection refused"
+      //     })
 
-          })
+      let response = loginApi(this.username, this.password)
+      if (typeof response === "string") this.error = response;
+      else if (typeof response === "object") {
+        console.log(response);
+        router.push("/dashboard");
+      }
 
-    },
+    }
+    ,
   },
+  computed: {
+
+  }
 }
 </script>

@@ -51,7 +51,7 @@ describe('Reset Password', () => {
         await nextTick();
         expect(wrapper.find('#msgError').text()).toContain(401)
     })
-    it("Should redirect to resetPassword", async () =>{
+    it("Should redirect to login", async () =>{
         const wrapper = mountTheForm();
         const push = vi.spyOn(router,'push');
         const inputResetPassword = wrapper.find('a[id=redirection');
