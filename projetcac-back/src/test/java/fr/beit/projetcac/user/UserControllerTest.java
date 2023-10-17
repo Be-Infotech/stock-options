@@ -1,8 +1,5 @@
-package fr.beit.projetcac.usertest;
+package fr.beit.projetcac.user;
 
-import fr.beit.projetcac.user.User;
-import fr.beit.projetcac.user.UserController;
-import fr.beit.projetcac.user.UserService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +13,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.BodyInserters.fromValue;
@@ -40,14 +39,9 @@ public class UserControllerTest {
     @Nested
     class authenticateUser {
 
-        //Bien authentifié
-        //Pas authentifié
-        //Appel avec un mauvais body
-
-
         @Test
         void shouldReturnUser() {
-            when(userService.authenticateUser("toto", "thisisaspassword"))
+            when(userService.authenticateUser("toto", "1234"))
                     .thenReturn(Optional.of(new User(
                             1,
                             "toto",
@@ -67,7 +61,7 @@ public class UserControllerTest {
                     .contentType(APPLICATION_JSON)
                     .body(fromValue("""
                             {
-                                "usernameOrMail" : "toto"
+                                "usernameOrMail" : "toto",
                                 "password" : "1234"
                             }
                             """))
@@ -78,18 +72,55 @@ public class UserControllerTest {
                                 {
                                     "id": 1,
                                     "username": "toto",
-                                    "password": "",
+                                    "password": "1234",
                                     "mail": "toto@mail.com",
                                     "firstName": "toto",
-                                    "lastName": "toto",
+                                    "lastName": "",
                                     "profilePhoto": "",
                                     "city": "",
                                     "address": "",
                                     "country": "",
-                                    "postalCode": "" ,
+                                    "postalCode": "" 
                                 }
                             """
                     );
+        }
+        @Test
+        void ShouldReturnUnauthorized_whenBadUserOrPassword(){
+            when(userService.authenticateUser("toto", "1234"))
+                    .thenReturn(Optional.empty());
+
+
+
+            webTestClient.post()
+                    .uri("/user/signin")
+                    .contentType(APPLICATION_JSON)
+                    .body(fromValue("""
+                            {
+                                "usernameOrMail" : "toto",
+                                "password" : "1234"
+                            }
+                            """))
+                    .exchange()
+                    .expectStatus().isUnauthorized()
+                    .expectBody();
+        }
+        @Test
+        void ShouldReturnBadRequest_whenNoBody(){
+            when(userService.authenticateUser(anyString(), anyString()))
+                    .thenReturn(Optional.empty());
+
+
+
+            webTestClient.post()
+                    .uri("/user/signin")
+                    .contentType(APPLICATION_JSON)
+                    .body(fromValue("""
+                     
+                            """))
+                    .exchange()
+                    .expectStatus().isBadRequest()
+                    .expectBody();
         }
     }
 
