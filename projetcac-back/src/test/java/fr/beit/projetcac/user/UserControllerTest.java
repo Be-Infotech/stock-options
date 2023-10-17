@@ -86,7 +86,7 @@ public class UserControllerTest {
                     );
         }
         @Test
-        void ShouldReturnUnauthorized_whenBadUserOrPassword(){
+        void shouldReturnUnauthorized_whenBadUserOrPassword(){
             when(userService.authenticateUser("toto", "1234"))
                     .thenReturn(Optional.empty());
 
@@ -102,11 +102,10 @@ public class UserControllerTest {
                             }
                             """))
                     .exchange()
-                    .expectStatus().isUnauthorized()
-                    .expectBody();
+                    .expectStatus().isUnauthorized();
         }
         @Test
-        void ShouldReturnBadRequest_whenNoBody(){
+        void shouldReturnBadRequest_whenNoBody(){
             when(userService.authenticateUser(anyString(), anyString()))
                     .thenReturn(Optional.empty());
 
@@ -120,7 +119,6 @@ public class UserControllerTest {
                             """))
                     .exchange()
                     .expectStatus().isBadRequest()
-                    .expectBody();
         }
     }
 
