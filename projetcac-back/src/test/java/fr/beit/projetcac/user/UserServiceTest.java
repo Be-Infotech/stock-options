@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 
@@ -27,8 +28,6 @@ public class UserServiceTest {
     @Mock
     PasswordEncoder passwordEncoder;
     @Mock
-    AuthenticationManager authenticationManager;
-    @Mock
     UserRepository userRepository;
 
     @InjectMocks
@@ -38,10 +37,10 @@ public class UserServiceTest {
     class authenticateUser {
         @Test
         void shouldReturnUser_whenKnownInDatabase() {
-            var expectedUser = Optional.of(new User(
+            var bddUser = Optional.of(new User(
                     1,
                     "toto",
-                    "",
+                    "encodedPassword",
                     "toto@mail.com",
                     "",
                     "",
@@ -51,36 +50,59 @@ public class UserServiceTest {
                     "",
                     ""
             ));
-
-            UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+            var expectedUser = Optional.of(new User(
+                    1,
                     "toto",
-                    "1234",
-                    new ArrayList<>()
-            );
-
-            when(authenticationManager.authenticate(any()))
-                    .thenReturn(new UsernamePasswordAuthenticationToken(userDetails,"1234", userDetails.getAuthorities()));
+                    "####",
+                    "toto@mail.com",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+            ));
+            when(passwordEncoder.matches("1234","encodedPassword"))
+                    .thenReturn(true);
 
             when(userRepository.findByUsernameOrMail("toto","toto"))
-                    .thenReturn(expectedUser);
-
-            assertEquals(expectedUser, userService.authenticateUser("toto","toto"));
+                    .thenReturn(bddUser);
+            assertEquals(expectedUser, userService.authenticateUser("toto","1234"));
         }
 
         @Test
         void shouldReturnEmpty_whenNotKnownInDatabase() {
             var expectedUser = Optional.<User>empty();
-            UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-                    "toto",
-                    "1234",
-                    new ArrayList<>()
-            );
-
-            when(authenticationManager.authenticate(any()))
-                    .thenReturn(new UsernamePasswordAuthenticationToken(userDetails,"1234", userDetails.getAuthorities()));
+//            when(passwordEncoder.matches("1234", anyString()))
+//                    .thenReturn(false);
 
             when(userRepository.findByUsernameOrMail("toto","toto"))
                     .thenReturn(expectedUser);
+
+            assertEquals(expectedUser, userService.authenticateUser("toto", "1234"));
+        }
+        @Test
+        void shouldReturnEmpty_whenWrongPassword() {
+            var bddUser = Optional.of(new User(
+                    1,
+                    "toto",
+                    "encodedPassword",
+                    "toto@mail.com",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+            ));
+            var expectedUser = Optional.<User>empty();
+            when(passwordEncoder.matches("1234", "encodedPassword"))
+                    .thenReturn(false);
+
+            when(userRepository.findByUsernameOrMail("toto","toto"))
+                    .thenReturn(bddUser);
 
             assertEquals(expectedUser, userService.authenticateUser("toto", "1234"));
         }

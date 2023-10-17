@@ -118,7 +118,7 @@ public class UserControllerTest {
                      
                             """))
                     .exchange()
-                    .expectStatus().isBadRequest()
+                    .expectStatus().isBadRequest();
         }
     }
 
