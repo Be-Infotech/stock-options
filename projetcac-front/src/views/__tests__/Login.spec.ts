@@ -7,6 +7,7 @@ import router from '@/router';
 import {nextTick} from "vue";
 import {types} from "sass";
 import Error = types.Error;
+import {throws} from "assert";
 
 function mountTheForm() {
     const wrapper = mount(Login, {
