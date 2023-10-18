@@ -35,6 +35,8 @@
 import Head from "@/components/Head.vue";
 import Graphic from "@/components/Graphic.vue";
 import Tableau from "@/components/Tableau.vue";
+import { mapState } from "vuex";
+import router from "@/router";
 
 export default {
   name: "Dashboard",
@@ -46,6 +48,14 @@ export default {
   data() {
     return {}
   },
-  methods: {}
+  methods: {},
+  computed: {
+    ...mapState(['username','mail']),
+  },
+  beforeMount() {
+    if ((this.username === "" ) || (this.mail === "")){
+      router.push("/")
+    }
+  }
 }
 </script>

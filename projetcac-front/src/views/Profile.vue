@@ -2,6 +2,8 @@
 import Head from "@/components/Head.vue";
 import UserData from "@/components/UserData.vue";
 import UserInfo from "@/components/UserInfo.vue";
+import {mapState} from "vuex";
+import router from "@/router";
 
 export default {
   name: "Profile",
@@ -13,7 +15,15 @@ export default {
   data() {
     return {}
   },
-  methods: {}
+  methods: {},
+  computed: {
+    ...mapState(['username','mail']),
+  },
+  beforeMount() {
+    if ((this.username === "" ) || (this.mail === "")){
+      router.push("/")
+    }
+  }
 }
 </script>
 
