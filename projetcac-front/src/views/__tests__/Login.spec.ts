@@ -7,6 +7,7 @@ import router from '@/router';
 import {nextTick} from "vue";
 import {types} from "sass";
 import Error = types.Error;
+import {throws} from "assert";
 
 function mountTheForm() {
     const wrapper = mount(Login, {
@@ -58,7 +59,7 @@ describe('Login', () => {
     })
     it('should not allow connection', async () =>{
         const errorMessage = "Connection refused";
-        loginApi.mockResolvedValue(errorMessage);
+        loginApi.mockRejectedValueOnce(new Error(errorMessage));
         const wrapper = mountTheForm();
         const inputUsername = wrapper.find("#username");
         const inputPassword = wrapper.find('#password');
@@ -71,7 +72,7 @@ describe('Login', () => {
         await nextTick()
         const textError = wrapper.find("#msgError") ;
         expect(textError.exists())
-        expect(textError.text()).toContain("Connection refused")
+        expect(textError.text()).toContain(errorMessage)
     })
     it("Should redirect to resetPassword", async () =>{
         const wrapper = mountTheForm();

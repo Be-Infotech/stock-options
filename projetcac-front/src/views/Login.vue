@@ -145,18 +145,18 @@ export default {
       //       this.error = "Connection refused"
       //     })
 
-      let response = loginApi(this.username, this.password)
-      if (typeof response === "string") this.error = response;
-      else if (typeof response === "object") {
-        console.log(response);
-        router.push("/dashboard");
-      }
+      loginApi(this.username, this.password)
+        .then(response => {
+          console.log(response)
+          router.push("/dashboard")
+        })
+        .catch(error => {
+          this.error = "Connection refused"
+        })
 
     }
     ,
   },
-  computed: {
 
-  }
 }
 </script>
