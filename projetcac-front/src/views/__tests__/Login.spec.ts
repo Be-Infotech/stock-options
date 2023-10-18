@@ -58,6 +58,7 @@ describe('Login', () => {
     })
     it('should not allow connection', async () =>{
         const errorMessage = "Connection refused";
+        loginApi.mockRestore();
         loginApi.mockRejectedValueOnce(new Error(errorMessage));
         const wrapper = mountTheForm();
         const inputUsername = wrapper.find("#username");
