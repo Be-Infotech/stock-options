@@ -1,4 +1,5 @@
-export function loginApi(username: string, password: string){
+
+export function loginApi(username: string, password: string) : Promise<User|string> {
 
   const data : User = {
     username: "loan",
@@ -12,6 +13,9 @@ export function loginApi(username: string, password: string){
     postalCode: "62400",
     profilePhoto:  ""
   };
+
+  const error : string = 'error fail'
+
 
   console.log(data)
 
@@ -35,6 +39,16 @@ export function loginApi(username: string, password: string){
     });*/
 
 }
+
+
+export function resetPasswordApi(Username :string) : Promise<Number|string>{
+  const error = 401;
+  const password = "1234"
+
+    return Promise.resolve(error)
+}
+
+
 
 export interface User {
       username: string,
