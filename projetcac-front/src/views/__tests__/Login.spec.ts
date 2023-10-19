@@ -59,7 +59,6 @@ describe('Login', () => {
     })
     it('should not allow connection', async () =>{
         const errorMessage = "Connection refused";
-        loginApi.mockRestore();
         loginApi.mockRejectedValueOnce(new Error(errorMessage));
         const wrapper = mountTheForm();
         const inputUsername = wrapper.find("#username");
@@ -70,6 +69,7 @@ describe('Login', () => {
         await inputPassword.setValue('toto')
         await inputSubmit.trigger('submit');
         expect(loginApi).toHaveBeenCalledWith('loan', 'toto')
+        await nextTick()
         await nextTick()
         const textError = wrapper.find("#msgError") ;
         expect(textError.exists())

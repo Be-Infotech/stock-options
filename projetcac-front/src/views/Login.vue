@@ -155,7 +155,7 @@ export default {
           router.push("/dashboard")
         })
         .catch(error => {
-          this.error = "Connection refused"
+          this.error = error
         })
 
     },
