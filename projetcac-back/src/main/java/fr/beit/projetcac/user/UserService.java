@@ -18,20 +18,22 @@ public class UserService {
 
     public Optional<User> authenticateUser(String username, String password) {
         return userRepository.findByUsernameOrMail(username, username)
-                .filter(user1 -> passwordEncoder.matches(password, user1.getPassword()))
-                .map( user1 -> new User(
-                        user1.getId(),
-                        user1.getUsername(),
+                .filter(user -> passwordEncoder.matches(password,user.getPassword()))
+                .map(user -> new User(
+                        user.getId(),
+                        user.getUsername(),
                         "####",
-                        user1.getMail(),
-                        user1.getFirstName(),
-                        user1.getLastName(),
-                        user1.getProfilePhoto(),
-                        user1.getCity(),
-                        user1.getAddress(),
-                        user1.getCountry(),
-                        user1.getPostalCode()
+                        user.getMail(),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getProfilePhoto(),
+                        user.getCity(),
+                        user.getAddress(),
+                        user.getCountry(),
+                        user.getPostalCode()
                 ));
+
+
     }
 
 
