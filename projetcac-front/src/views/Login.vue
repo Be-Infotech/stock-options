@@ -124,6 +124,7 @@ input:-moz-placeholder {
 
 import {loginApi} from "@/api";
 import router from "@/router";
+import { mapState } from "vuex";
 
 
 export default {
@@ -145,18 +146,21 @@ export default {
       //       this.error = "Connection refused"
       //     })
 
-      let response = loginApi(this.username, this.password)
-      if (typeof response === "string") this.error = response;
-      else if (typeof response === "object") {
-        console.log(response);
-        router.push("/dashboard");
-      }
+      loginApi(this.username, this.password)
+        .then(response => {
+          console.log(response)
+          console.log(response.username)
+          router.push("/dashboard")
+          this.$store.commit('updateUsername',response.username);
+          this.$store.commit('updateMail',response.mail);
+        })
+        .catch(error => {
+          this.error = error
+        })
 
-    }
-    ,
+    },
+
   },
-  computed: {
 
-  }
 }
 </script>

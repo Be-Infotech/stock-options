@@ -6,4 +6,10 @@ import { RouterLink, RouterView } from 'vue-router'
 <template>
   <RouterView />
 </template>
+<style>
+ body{
+   margin: 0;
+   font-family: Roboto, sans-serif;
+ }
+</style>
 
