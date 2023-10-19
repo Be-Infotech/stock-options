@@ -17,26 +17,23 @@ public class UserService {
 
 
     public Optional<User> authenticateUser(String username, String password) {
-        Optional<User> user = userRepository.findByUsernameOrMail(username, username);
+        return userRepository.findByUsernameOrMail(username, username)
+                .filter(user -> passwordEncoder.matches(password,user.getPassword()))
+                .map(user -> new User(
+                        user.getId(),
+                        user.getUsername(),
+                        "####",
+                        user.getMail(),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getProfilePhoto(),
+                        user.getCity(),
+                        user.getAddress(),
+                        user.getCountry(),
+                        user.getPostalCode()
+                ));
 
-        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
-           User userInfo = new User(
-                    user.get().getId(),
-                    user.get().getUsername(),
-                    "####",
-                    user.get().getMail(),
-                    user.get().getFirstName(),
-                    user.get().getLastName(),
-                    user.get().getProfilePhoto(),
-                    user.get().getCity(),
-                    user.get().getAddress(),
-                    user.get().getCountry(),
-                    user.get().getPostalCode()
-            );
-           return Optional.of(userInfo);
-        } else{
-            return Optional.empty();
-        }
+
     }
 
 
