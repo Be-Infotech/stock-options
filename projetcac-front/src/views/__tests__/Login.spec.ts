@@ -1,4 +1,5 @@
 import {describe, it, expect, vi, SpyInstance, beforeEach} from 'vitest';
+
 import {flushPromises, mount} from '@vue/test-utils';
 import { User } from "../../api/api";
 import * as api from "../../api/api";
@@ -14,9 +15,11 @@ function mountTheForm() {
         }
     })
     return wrapper
+
 }
 
 describe('Login', () => {
+
 
     let loginApi: SpyInstance<[username: string, password: string], Promise<User|string>>;
     beforeEach(() => {
@@ -82,5 +85,6 @@ describe('Login', () => {
         expect(push).toHaveBeenCalledWith('/resetPassword')
     })
 })
+
 
 

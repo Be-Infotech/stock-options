@@ -84,6 +84,7 @@ input:-moz-placeholder { text-align:center; }
           <input id="username" type="text" v-model="username" placeholder="username" required>
         </div>
         <div>
+
           <button id="submit">Send</button>
         </div>
         <div>
@@ -92,6 +93,7 @@ input:-moz-placeholder { text-align:center; }
         </div>
         <div>
           <router-link to="/" id="redirection">Log in</router-link>
+
         </div>
       </form>
     </div>
@@ -101,15 +103,18 @@ input:-moz-placeholder { text-align:center; }
 
 
 <script>
+
 import {loginApi} from "@/api";
 import router from "@/router";
 import {resetPasswordApi} from "@/api/api";
+
 
 export default {
   name:"ResetPass",
   data() {
     return{
       username:"",
+
       password:"",
       error :""
     }
@@ -128,6 +133,7 @@ export default {
           })
     },
   },
+
 
 }
 </script>
