@@ -77,17 +77,17 @@
 <template>
   <div id="pagewrapper">
     <div id="logginwrapper">
-      <form @submit.prevent="handleSubmit">
+      <form @submit.prevent="handleSubmit()">
         <div>
           <h2>Log in</h2>
         </div>
         <div id="inputwrapper">
           <input id="username" type="text" v-model="username" placeholder="Username" required>
           <input id="password" type="password" v-model="password" placeholder="Password" required>
-          <p>Forget your password ? <router-link to="/resetPassword">Reset here</router-link></p>
+          <p>Forget your password ? <RouterLink to="/resetPassword">Reset here</RouterLink></p>
         </div>
         <div>
-          <button>Log in now</button>
+          <button id="submit" type="submit">Log in now</button>
         </div>
       </form>
     </div>
@@ -95,8 +95,10 @@
 </template>
 
 <script>
+
+import {loginApi} from "@/api";
+
 export default {
-  name: 'Loggin',
   data () {
     return {
       username: "",
@@ -105,11 +107,8 @@ export default {
   },
   methods: {
     handleSubmit(){
-      const data = {
-        username: this.username,
-        password: this.password
-      }
-    }
+      loginApi(this.username, this.password);
+    },
   }
 }
 </script>
