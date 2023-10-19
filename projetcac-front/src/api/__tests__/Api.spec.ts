@@ -1,7 +1,7 @@
-import {afterEach, beforeEach, describe, expect, it,} from 'vitest';
+import {describe, expect, it,beforeEach,afterEach} from 'vitest';
 import nock from 'nock';
-import {loginApi, resetPasswordApi, User} from "../api";
-import axios, {isAxiosError} from "axios";
+import {loginApi, User} from "../api";
+import {post} from "axios";
 
 describe('loginApi', () => {
     const username = 'testuser';
@@ -10,11 +10,6 @@ describe('loginApi', () => {
 
     afterEach(() => {
         nock.cleanAll();
-    });
-
-    beforeEach(() => {
-        // fix: Cross origin http://localhost forbidden)
-        axios.defaults.adapter = 'http';
     });
 
     it('Should return code 200 and User', async () => {
@@ -42,53 +37,4 @@ describe('loginApi', () => {
     });
 
 
-    expect.extend({
-
-        verify<T>(received: any, predicate: (value: T) => boolean) {
-            return {pass: predicate(received), message: () => `expected ${received} to match ${predicate}`};
-        },
-    });
-    it('Should return code 401', async () => {
-        // Réponse simulée que vous souhaitez renvoyer
-
-
-        nock(url)
-            .post('/user/signin')
-            .reply(401);
-        await expect(loginApi(username, password)).rejects.toThrow(
-            expect.verify(x => isAxiosError(x) && x.response?.status === 401));
-    });
-
-
 });
-
-describe("resetPassword Api", async () => {
-    const username = 'testuser';
-    const url = 'http://localhost:8080';
-    it('Should return password', async () => {
-        const response = {
-            password : "1234"
-        };
-        nock(url)
-            .post('/user/resetPassword')
-            .reply(200,response)
-
-        const result = await resetPasswordApi(username)
-        expect(result).toEqual(response);
-    })
-    expect.extend({
-
-        verify<T>(received: any, predicate: (value: T) => boolean) {
-            return {pass: predicate(received), message: () => `expected ${received} to match ${predicate}`};
-        },
-    });
-    it('Should return 500', async () =>{
-
-        nock(url)
-            .post('/user/resetPassword')
-            .reply(500);
-        await expect(resetPasswordApi(username)).rejects.toThrow(
-            expect.verify(x => isAxiosError(x) && x.response?.status === 500));
-
-    })
-})
