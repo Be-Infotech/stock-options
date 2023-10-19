@@ -9,7 +9,7 @@ export  function loginApi(username: string, password: string): Promise<any> {
   }
   return axios.post(url, data)
     .then((response) => {
-      return Promise.resolve(response.data);
+      return response.data;
     })
     .catch((error) => {
       throw error;
