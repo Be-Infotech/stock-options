@@ -150,9 +150,9 @@ export default {
         .then(response => {
           console.log(response)
           console.log(response.username)
+          router.push("/dashboard")
           this.$store.commit('updateUsername',response.username);
           this.$store.commit('updateMail',response.mail);
-          router.push("/dashboard")
         })
         .catch(error => {
           this.error = error

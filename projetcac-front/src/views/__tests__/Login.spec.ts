@@ -2,12 +2,11 @@ import {describe, it, expect, vi, SpyInstance, beforeEach} from 'vitest';
 import {flushPromises, mount} from '@vue/test-utils';
 import { User } from "../../api/api";
 import * as api from "../../api/api";
-import Login from '@/views/Login.vue';
+import  Login  from '@/views/Login.vue';
 import router from '@/router';
 import {nextTick} from "vue";
 import {types} from "sass";
 import Error = types.Error;
-import {throws} from "assert";
 
 function mountTheForm() {
     const wrapper = mount(Login, {
@@ -42,7 +41,7 @@ describe('Login', () => {
             profilePhoto: ""
         }
         loginApi.mockResolvedValue(data)
-        const wrapper = mount(Login);
+        const wrapper = mountTheForm();
         const inputUsername = wrapper.find("#username");
         const inputPassword = wrapper.find('#password');
         const inputSubmit = wrapper.find("#submit")
@@ -51,7 +50,6 @@ describe('Login', () => {
         await inputUsername.setValue('loan')
         await inputPassword.setValue('toto')
         await inputSubmit.trigger('submit');
-
         expect(loginApi).toHaveBeenCalledWith('loan', 'toto')
         expect(push).toHaveBeenCalledOnce();
         expect(push).toHaveBeenCalledWith('/dashboard')
