@@ -2,9 +2,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main","feat/vueX","feat/addCI"]
+    branches: [ "main"]
   pull_request:
-    branches: [ "main","feat/vueX","feat/addCI"]
+    branches: [ "main"]
 
 jobs:
   build:
