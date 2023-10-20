@@ -70,16 +70,16 @@ describe('Login', () => {
         await nextTick()
         await nextTick()
         const textError = wrapper.find("#msgError") ;
+        const push = vi.spyOn(router, 'push');
         expect(textError.exists())
         expect(textError.text()).toContain(errorMessage)
+        expect(push).toHaveBeenCalledTimes(0);
     })
     it("Should redirect to resetPassword", async () =>{
         const wrapper = mountTheForm();
         const push = vi.spyOn(router,'push');
         const inputResetPassword = wrapper.find('a[id=redirection');
-
         await  inputResetPassword.trigger('click');
-
         expect(push).toHaveBeenCalledOnce();
         expect(push).toHaveBeenCalledWith('/resetPassword')
     })

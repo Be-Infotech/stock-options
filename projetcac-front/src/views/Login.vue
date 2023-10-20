@@ -137,15 +137,6 @@ export default {
   },
   methods: {
     handleSubmit() {
-      // loginApi(this.username, this.password)
-      //     .then((response) => {
-      //       console.log(response)
-      //       router.push("/dashboard")
-      //     })
-      //     .catch((error) => {
-      //       this.error = "Connection refused"
-      //     })
-
       loginApi(this.username, this.password)
         .then(response => {
           console.log(response)
