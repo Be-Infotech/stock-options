@@ -1,7 +1,7 @@
 import {describe, expect, it,beforeEach,afterEach} from 'vitest';
 import nock from 'nock';
 import {loginApi, User} from "../api";
-import {post} from "axios";
+import axios from "axios";
 
 describe('loginApi', () => {
     const username = 'testuser';
@@ -10,6 +10,11 @@ describe('loginApi', () => {
 
     afterEach(() => {
         nock.cleanAll();
+    });
+
+    beforeEach(() => {
+      // fix: Cross origin http://localhost forbidden)
+      axios.defaults.adapter = 'http';
     });
 
     it('Should return code 200 and User', async () => {
