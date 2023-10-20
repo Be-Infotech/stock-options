@@ -28,14 +28,16 @@ describe('Reset Password', () => {
         const wrapper = mountTheForm();
         const inpUsername = wrapper.find("#username");
         const inpSend = wrapper.find("#submit");
+        const push = vi.spyOn(router,'push');
 
         await inpUsername.setValue('loan');
         await inpSend.trigger('submit');
-
         expect(resetPasswordApi).toHaveBeenCalledOnce();
         expect(resetPasswordApi).toHaveBeenCalledWith('loan');
         await nextTick();
-        expect(wrapper.find('#pNewPassword').text()).toContain('1234')
+        expect(wrapper.find('#pNewPassword').text()).toContain('1234');
+        expect(push).toHaveBeenCalledTimes(0);
+
     })
     it("Should show error message", async () =>{
         const error = 401;
@@ -43,6 +45,7 @@ describe('Reset Password', () => {
         const wrapper = mountTheForm();
         const inpUsername = wrapper.find("#username");
         const inpSend = wrapper.find("#submit");
+        const push = vi.spyOn(router,'push');
 
         await inpUsername.setValue('loan');
         await inpSend.trigger('submit');
@@ -50,6 +53,7 @@ describe('Reset Password', () => {
         expect(resetPasswordApi).toHaveBeenCalledWith('loan');
         await nextTick();
         expect(wrapper.find('#msgError').text()).toContain(401)
+        expect(push).toHaveBeenCalledTimes(0);
     })
     it("Should redirect to login", async () =>{
         const wrapper = mountTheForm();
