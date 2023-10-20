@@ -127,7 +127,6 @@ public class UserControllerTest {
         @Test
         void shouldReturnUserdata() {
             UserController.UserInfoDto user = new UserController.UserInfoDto(
-                    1,
                     "toto",
                     "toto@mail.com",
                     "",
@@ -155,7 +154,19 @@ public class UserControllerTest {
             webTestClient.post()
                     .uri("/user/updateData")
                     .contentType(APPLICATION_JSON)
-                    .body(fromValue(user))
+                    .body(fromValue("""
+                            {
+                                "username" : "toto",
+                                "mail" : "toto@mail.com",
+                                "profilePhoto":"",
+                                "firstName": "",
+                                "lastName":"",
+                                "address":"",
+                                "city":"",
+                                "country":"",
+                                "postalCode":""
+                            }
+                            """))
                     .exchange()
                     .expectStatus().isOk()
                     .expectBody()
@@ -180,7 +191,6 @@ public class UserControllerTest {
         @Test
         void shouldReturnUnauthorized_whenUnknowUser() {
             UserController.UserInfoDto user = new UserController.UserInfoDto(
-                    1,
                     "toto",
                     "toto@mail.com",
                     "",
@@ -197,7 +207,19 @@ public class UserControllerTest {
             webTestClient.post()
                     .uri("/user/signin")
                     .contentType(APPLICATION_JSON)
-                    .body(fromValue(user))
+                    .body(fromValue("""
+                            {
+                                "username" : "toto",
+                                "mail" : "toto@mail.com",
+                                "profilePhoto":"",
+                                "firstName": "",
+                                "lastName":"",
+                                "address":"",
+                                "city":"",
+                                "country":"",
+                                "postalCode":""
+                            }
+                            """))
                     .exchange()
                     .expectStatus().isUnauthorized();
         }
