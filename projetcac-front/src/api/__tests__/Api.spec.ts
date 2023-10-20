@@ -1,7 +1,7 @@
-import {describe, expect, it,beforeEach,afterEach} from 'vitest';
+import {describe, expect, it,beforeEach,afterEach, } from 'vitest';
 import nock from 'nock';
 import {loginApi, User} from "../api";
-import axios from "axios";
+import axios, {isAxiosError} from "axios";
 
 describe('loginApi', () => {
     const username = 'testuser';
@@ -40,6 +40,17 @@ describe('loginApi', () => {
         const result = await loginApi(username, password);
         expect(result).toEqual(responseData);
     });
+  it('Should return code 401', async () => {
+    // Réponse simulée que vous souhaitez renvoyer
+
+
+
+    nock(url)
+      .post('/user/signin')
+      .reply(404);
+    await expect(loginApi(username, password)).rejects.toThrow(
+      expect.verify(x => isAxiosError(x) && x.response?.status === 404));
+  });
 
 
 });
