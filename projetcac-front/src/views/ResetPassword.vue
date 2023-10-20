@@ -116,16 +116,18 @@ export default {
   },
   methods : {
     handleSubmit() {
-      const response = resetPasswordApi(this.username);
-      response
-          .then(data =>{
-            if (typeof data === "string"){
-              this.password = data
-            }
-            else if (typeof data === 'number'){
-              this.error = data;
-            }
+      resetPasswordApi(this.username)
+          .then(response =>{
+            console.log(response);
+            this.password = response;
+            this.error = null;
           })
+          .catch(error =>{
+            console.log(error);
+            this.error = error;
+            this.password = null;
+          })
+
     },
   },
 

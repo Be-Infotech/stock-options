@@ -16,11 +16,18 @@ export  function loginApi(username: string, password: string): Promise<any> {
     });
 }
 
-export function resetPasswordApi(Username: string): Promise<Number | string> {
-  const error = 401;
-  const password = "1234"
-
-  return Promise.resolve(error)
+export function resetPasswordApi(username: string): Promise<any> {
+  const url = "http://localhost:8080/user/resetPassword";
+  const data = {
+    usernameOrMail: username
+  }
+  return axios.post(url, data)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        throw error;
+      });
 }
 
 

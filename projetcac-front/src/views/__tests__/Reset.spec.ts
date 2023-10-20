@@ -6,6 +6,7 @@ import router from '@/router';
 import {nextTick} from "vue";
 
 
+
 function mountTheForm() {
     const wrapper = mount(ResetPasswrod, {
         global: {
@@ -40,8 +41,8 @@ describe('Reset Password', () => {
 
     })
     it("Should show error message", async () =>{
-        const error = 401;
-        resetPasswordApi.mockResolvedValue(error);
+        let errorMessage = "401"
+        resetPasswordApi.mockRejectedValueOnce(new Error(errorMessage));
         const wrapper = mountTheForm();
         const inpUsername = wrapper.find("#username");
         const inpSend = wrapper.find("#submit");
@@ -52,7 +53,8 @@ describe('Reset Password', () => {
         expect(resetPasswordApi).toHaveBeenCalledOnce();
         expect(resetPasswordApi).toHaveBeenCalledWith('loan');
         await nextTick();
-        expect(wrapper.find('#msgError').text()).toContain(401)
+        await nextTick();
+        expect(wrapper.find('#msgError').text()).toContain(errorMessage)
         expect(push).toHaveBeenCalledTimes(0);
     })
     it("Should redirect to login", async () =>{
