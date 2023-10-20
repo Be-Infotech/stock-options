@@ -48,16 +48,15 @@ describe('loginApi', () => {
       return {pass: predicate(received), message: () => `expected ${received} to match ${predicate}`};
     },
   });
-
   it('Should return code 401', async () => {
     // Réponse simulée que vous souhaitez renvoyer
 
 
     nock(url)
       .post('/user/signin')
-      .reply(404);
+      .reply(401);
     await expect(loginApi(username, password)).rejects.toThrow(
-      expect.verify(x => isAxiosError(x) && x.response?.status === 404));
+      expect.verify(x => isAxiosError(x) && x.response?.status === 401));
   });
 
 
