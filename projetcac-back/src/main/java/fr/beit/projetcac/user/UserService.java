@@ -1,6 +1,7 @@
 package fr.beit.projetcac.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,12 +13,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+
     private final UserRepository userRepository;
+
+
     private final PasswordEncoder passwordEncoder;
 
 
-    public Optional<User> authenticateUser(String username, String password) {
-        return userRepository.findByUsernameOrMail(username, username)
+    public Optional<User> authenticateUser(String usernameOrMail, String password) {
+        return userRepository.findByUsernameOrMail(usernameOrMail, usernameOrMail)
                 .filter(user -> passwordEncoder.matches(password,user.getPassword()))
                 .map(user -> new User(
                         user.getId(),

@@ -2,11 +2,9 @@ package fr.beit.projetcac.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
@@ -25,11 +23,11 @@ public class UserController {
     }
 
     @PostMapping("/resetPassword")
-    public  Mono<String> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto){
-        return userService.savePassword(resetPasswordDto.getUsernameOrMail())
-                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)));
-    }
+    public Mono<String> resetPassword(@RequestBody LoginDto loginDto){
+       return userService.savePassword(loginDto.getUsernameOrMail())
+              .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)));
 
+    }
     @Value
     public static class LoginDto {
         String usernameOrMail;
