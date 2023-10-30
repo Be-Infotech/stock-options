@@ -22,8 +22,8 @@ public class UserController {
     }
 
     @PostMapping("/resetPassword")
-    public  Mono<String> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto){
-        return userService.savePassword(resetPasswordDto.getUsernameOrMail())
+    public  Mono<String> resetPassword(@RequestBody String usernameOrMail){
+        return userService.savePassword(usernameOrMail)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)));
     }
 
