@@ -1,5 +1,5 @@
 /**
- * plugins/index.js
+ * plugins/index.ts
  *
  * Automatically included in `./src/main.js`
  */

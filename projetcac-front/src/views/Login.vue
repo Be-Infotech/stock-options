@@ -120,11 +120,11 @@ input:-moz-placeholder {
   </div>
 </template>
 
-<script>
+<script lang="ts">
 
 import {loginApi} from "@/api";
 import router from "@/router";
-import { mapState } from "vuex";
+import store from "@/store";
 
 
 export default {
@@ -153,7 +153,7 @@ export default {
             country: response.country,
             postalCode: response.postalCode
           }
-          this.$store.commit('updateUserInfo', userData);
+          store.commit('updateUserInfo', userData);
         })
         .catch(error => {
           this.error = error
