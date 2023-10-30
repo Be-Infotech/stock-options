@@ -3,10 +3,7 @@ package fr.beit.projetcac.user;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
@@ -25,9 +22,15 @@ public class UserController {
     }
 
     @PostMapping("/resetPassword")
-    public  Mono<String> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto){
-        return userService.savePassword(resetPasswordDto.getUsernameOrMail())
+    public  Mono<String> resetPassword(@RequestBody String usernameOrMail){
+        return userService.savePassword(usernameOrMail)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)));
+    }
+
+    @PostMapping("/updateData")
+    public Mono<User> getUserInfo(@RequestBody UserInfoDto userInfoDto){
+        return Mono.justOrEmpty(userService.updateUserInfo(userInfoDto))
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED)));
     }
 
     @Value
@@ -38,6 +41,20 @@ public class UserController {
     @Value
     public static class ResetPasswordDto {
         String usernameOrMail;
+    }
+
+    @Value
+    public static class UserInfoDto{
+        Integer userId;
+        String username;
+        String mail;
+        String profilePhoto;
+        String firstName;
+        String lastName;
+        String address;
+        String city;
+        String country;
+        String postalCode;
     }
 }
 

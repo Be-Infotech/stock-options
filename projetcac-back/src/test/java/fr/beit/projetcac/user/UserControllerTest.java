@@ -85,11 +85,11 @@ public class UserControllerTest {
                             """
                     );
         }
+
         @Test
-        void shouldReturnUnauthorized_whenBadUserOrPassword(){
+        void shouldReturnUnauthorized_whenBadUserOrPassword() {
             when(userService.authenticateUser("toto", "1234"))
                     .thenReturn(Optional.empty());
-
 
 
             webTestClient.post()
@@ -104,22 +104,117 @@ public class UserControllerTest {
                     .exchange()
                     .expectStatus().isUnauthorized();
         }
+
         @Test
-        void shouldReturnBadRequest_whenNoBody(){
+        void shouldReturnBadRequest_whenNoBody() {
             when(userService.authenticateUser(anyString(), anyString()))
                     .thenReturn(Optional.empty());
-
 
 
             webTestClient.post()
                     .uri("/user/signin")
                     .contentType(APPLICATION_JSON)
                     .body(fromValue("""
-                     
+                                                 
                             """))
                     .exchange()
                     .expectStatus().isBadRequest();
         }
     }
 
+    @Nested
+    class updateData {
+        @Test
+        void shouldReturnUserdata() {
+            UserController.UserInfoDto user = new UserController.UserInfoDto(
+                    1,
+                    "toto",
+                    "toto@mail.com",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+            );
+            when(userService.updateUserInfo(user))
+                    .thenReturn(Optional.of(new User(
+                            1,
+                            "toto",
+                            "####",
+                            "toto@mail.com",
+                            "toto",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "")));
+
+            webTestClient.post()
+                    .uri("/user/updateData")
+                    .contentType(APPLICATION_JSON)
+                    .body(fromValue(user))
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectBody()
+                    .json("""
+                                {
+                                    "id": 1,
+                                    "username": "toto",
+                                    "password": "####",
+                                    "mail": "toto@mail.com",
+                                    "firstName": "toto",
+                                    "lastName": "",
+                                    "profilePhoto": "",
+                                    "city": "",
+                                    "address": "",
+                                    "country": "",
+                                    "postalCode": "" 
+                                }
+                            """
+                    );
+        }
+
+        @Test
+        void shouldReturnUnauthorized_whenUnknowUser() {
+            UserController.UserInfoDto user = new UserController.UserInfoDto(
+                    1,
+                    "toto",
+                    "toto@mail.com",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+            );
+            when(userService.updateUserInfo(user))
+                    .thenReturn(Optional.empty());
+
+            webTestClient.post()
+                    .uri("/user/signin")
+                    .contentType(APPLICATION_JSON)
+                    .body(fromValue(user))
+                    .exchange()
+                    .expectStatus().isUnauthorized();
+        }
+
+        @Test
+        void shouldReturnBadRequest_whenNoBody() {
+            when(userService.updateUserInfo(any()))
+                    .thenReturn(Optional.empty());
+
+            webTestClient.post()
+                    .uri("/user/updateData")
+                    .contentType(APPLICATION_JSON)
+                    .body(fromValue("""
+                                                       
+                            """))
+                    .exchange()
+                    .expectStatus().isBadRequest();
+        }
+    }
 }

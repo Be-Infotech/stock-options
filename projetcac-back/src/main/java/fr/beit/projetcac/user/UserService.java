@@ -1,7 +1,6 @@
 package fr.beit.projetcac.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -18,7 +17,7 @@ public class UserService {
 
     public Optional<User> authenticateUser(String username, String password) {
         return userRepository.findByUsernameOrMail(username, username)
-                .filter(user -> passwordEncoder.matches(password,user.getPassword()))
+                .filter(user -> passwordEncoder.matches(password, user.getPassword()))
                 .map(user -> new User(
                         user.getId(),
                         user.getUsername(),
@@ -56,4 +55,34 @@ public class UserService {
                 .map(User::getPassword);
     }
 
+    public Optional<User> updateUserInfo(UserController.UserInfoDto user) {
+        return userRepository.findById(user.getUserId())
+                .map(user1 -> new User(
+                        user.getUserId(),
+                        user.getUsername(),
+                        user1.getPassword(),
+                        user.getMail(),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getProfilePhoto(),
+                        user.getCity(),
+                        user.getAddress(),
+                        user.getCountry(),
+                        user.getPostalCode()
+                ))
+                .flatMap(user1 -> Optional.of(userRepository.save(user1)))
+                .map(user1 -> new User(
+                        user1.getId(),
+                        user.getUsername(),
+                        "####",
+                        user.getMail(),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getProfilePhoto(),
+                        user.getCity(),
+                        user.getAddress(),
+                        user.getCountry(),
+                        user.getPostalCode()
+                ));
+    }
 }
