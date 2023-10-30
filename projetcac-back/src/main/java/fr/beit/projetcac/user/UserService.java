@@ -56,9 +56,9 @@ public class UserService {
     }
 
     public Optional<User> updateUserInfo(UserController.UserInfoDto user) {
-        return userRepository.findByUsernameOrMail(user.getUsername(), user.getMail())
+        return userRepository.findById(user.getUserId())
                 .map(user1 -> new User(
-                        user1.getId(),
+                        user.getUserId(),
                         user.getUsername(),
                         user1.getPassword(),
                         user.getMail(),

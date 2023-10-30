@@ -45,6 +45,7 @@ public class UserController {
 
     @Value
     public static class UserInfoDto{
+        Integer userId;
         String username;
         String mail;
         String profilePhoto;
