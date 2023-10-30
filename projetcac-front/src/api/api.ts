@@ -1,4 +1,5 @@
 import axios from "axios";
+import {th} from "vuetify/locale";
 
 
 export  function loginApi(username: string, password: string): Promise<any> {
@@ -26,6 +27,17 @@ export function resetPasswordApi(username: string): Promise<any> {
         return response.data;
       })
       .catch((error) => {
+        throw error;
+      });
+}
+export function updateUserDataApi(userData: object):Promise<any>{
+  const url = "http://localhost:8080/user/updateData";
+  console.log(userData);
+  return axios.post(url, userData)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) =>{
         throw error;
       });
 }

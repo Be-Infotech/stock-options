@@ -139,11 +139,21 @@ export default {
     handleSubmit() {
       loginApi(this.username, this.password)
         .then(response => {
-          console.log(response)
-          console.log(response.username)
           router.push("/dashboard")
-          this.$store.commit('updateUsername',response.username);
-          this.$store.commit('updateMail',response.mail);
+          console.log(response)
+          let userData = {
+            userId : response.id,
+            username: response.username,
+            mail: response.mail,
+            profilePhoto: response.profilePhoto,
+            firstName: response.firstName,
+            lastName: response.lastName,
+            address: response.address,
+            city: response.city,
+            country: response.country,
+            postalCode: response.postalCode
+          }
+          this.$store.commit('updateUserInfo', userData);
         })
         .catch(error => {
           this.error = error

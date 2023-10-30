@@ -17,10 +17,10 @@ export default {
   },
   methods: {},
   computed: {
-    ...mapState(['username','mail']),
+    ...mapState(['userInfo']),
   },
   beforeMount() {
-    if ((this.username === "" ) || (this.mail === "")){
+    if ((this.userInfo.username === "" ) && (this.userInfo.mail === "")){
       router.push("/")
     }
   }
@@ -32,9 +32,9 @@ export default {
   <div id="pageWrapper">
     <UserData title="Edit profile"/>
     <UserInfo
-      firstName = "Loan"
-      lastName = "Heniart"
-      username="lheniart"
+      :firstName = userInfo.firstName
+      :lastName = userInfo.lastName
+      :username= userInfo.username
     />
   </div>
 

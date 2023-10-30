@@ -1,35 +1,52 @@
 <script>
+import {mapState} from "vuex";
+import {updateUserDataApi} from "@/api/api";
+
 export default {
   name: "UserData",
   props: {
     title : String
   },
+  computed: {
+    ...mapState(['userInfo']),
+  },
+  methods: {
+    handleSubmit(){
+      updateUserDataApi(this.userInfo)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error =>{
+          console.log(error);
+        })
+    }
+  }
 }
 </script>
 
 <template>
   <div id="componentWrapper">
     <div id="titleWrapper"><h2>{{title}}</h2></div>
-    <form id="formWrapper">
+    <form id="formWrapper" @submit.prevent="handleSubmit()">
       <div id="div1" class="inputWrapper">
-        <input type="text" name="username" id="username" placeholder="Username">
-        <input type="text" name="email" id="email" placeholder="Email">
+        <input type="text" name="username" id="username" placeholder="Username" v-model="userInfo.username" required>
+        <input type="email" name="email" id="email" placeholder="Email" v-model="userInfo.mail" required>
       </div>
       <div id="imagePassword" class="inputWrapper">
         <input type="file" accept="./png" id="image">
         <input type="password" name="password" id="password" placeholder="password">
       </div>
       <div id="div2" class="inputWrapper">
-        <input type="text" name="firstname" id="firstname" placeholder="First name">
-        <input type="text" name="firstname" id="firstname" placeholder="Last name">
+        <input type="text" name="firstname" id="firstname" placeholder="First name" v-model="userInfo.firstName">
+        <input type="text" name="Last name" id="Last name" placeholder="Last name" v-model="userInfo.lastName">
       </div>
       <div id="div3" class="inputWrapper">
-        <input type="text" name="address" id="address" placeholder="Address">
+        <input type="text" name="address" id="address" placeholder="Address" v-model="userInfo.address">
       </div>
       <div id="div4" class="inputWrapper">
-        <input type="text" name="city" id="city" placeholder="City">
-        <input type="text" name="country" id="country" placeholder="Country">
-        <input type="text" name="postalcode" id="postalcode" placeholder="Postal code">
+        <input type="text" name="city" id="city" placeholder="City" v-model="userInfo.city">
+        <input type="text" name="country" id="country" placeholder="Country" v-model="userInfo.country">
+        <input type="text" name="postalcode" id="postalcode" placeholder="Postal code" v-model="userInfo.postalCode">
       </div>
       <div id="div5" ><button>UPDATE PROFILE</button></div>
     </form>

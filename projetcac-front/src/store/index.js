@@ -2,18 +2,27 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    username: "",
-    mail: "",
+    userInfo : {
+      userId: null,
+      username: "",
+      mail: "",
+      profilePhoto: "",
+      firstName: "",
+      lastName: "",
+      address: "",
+      city: "",
+      country: "",
+      postalCode: ""
+    }
+
+
 
   },
   getters: {
   },
   mutations: {
-    updateUsername(state, newValue){
-      state.username = newValue;
-    },
-    updateMail(state, newValue){
-      state.mail = newValue;
+    updateUserInfo(state, newValue){
+      state.userInfo = newValue;
     }
   },
   actions: {

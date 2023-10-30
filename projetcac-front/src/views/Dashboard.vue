@@ -50,10 +50,10 @@ export default {
   },
   methods: {},
   computed: {
-    ...mapState(['username','mail']),
+    ...mapState(['userInfo']),
   },
   beforeMount() {
-    if ((this.username === "" ) || (this.mail === "")){
+    if (((this.userInfo.username === "" ) && (this.userInfo.mail === ""))){
       router.push("/")
     }
   }

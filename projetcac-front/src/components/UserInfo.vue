@@ -1,4 +1,6 @@
 <script>
+import {mapState} from "vuex";
+
 export default {
   name: "UserData",
   props: {
@@ -6,6 +8,7 @@ export default {
     lastName: String,
     username: String
   },
+
 }
 </script>
 
