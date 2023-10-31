@@ -107,12 +107,10 @@ input:-moz-placeholder {
         <div id="inputwrapper">
           <input id="username" type="text" v-model="username" placeholder="Username" required>
           <input id="password" type="password" v-model="password" placeholder="Password" required>
-
             <p id="msgError" v-if="error">{{ error }}</p>
           <p>Forget your password ?
             <RouterLink id="redirection" to="/resetPassword">Reset here</RouterLink>
           </p>
-
         </div>
         <div>
           <button id="submit" type="submit">Log in now</button>
@@ -125,13 +123,11 @@ input:-moz-placeholder {
 <script>
 
 import {loginApi} from "@/api";
-
 import router from "@/router";
 
 
 export default {
   data() {
-
     return {
         username: "",
         password: "",
@@ -139,7 +135,6 @@ export default {
     }
   },
   methods: {
-
     handleSubmit() {
      const response = loginApi(this.username, this.password);
       response
@@ -155,6 +150,5 @@ export default {
 
     },
   },
-
 }
 </script>

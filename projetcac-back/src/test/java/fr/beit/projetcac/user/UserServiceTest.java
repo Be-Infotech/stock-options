@@ -6,18 +6,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import reactor.test.StepVerifier;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 
@@ -63,12 +57,12 @@ public class UserServiceTest {
                     "",
                     ""
             ));
-            when(passwordEncoder.matches("1234","encodedPassword"))
+            when(passwordEncoder.matches("1234", "encodedPassword"))
                     .thenReturn(true);
 
-            when(userRepository.findByUsernameOrMail("toto","toto"))
+            when(userRepository.findByUsernameOrMail("toto", "toto"))
                     .thenReturn(bddUser);
-            assertEquals(expectedUser, userService.authenticateUser("toto","1234"));
+            assertEquals(expectedUser, userService.authenticateUser("toto", "1234"));
         }
 
         @Test
@@ -77,11 +71,12 @@ public class UserServiceTest {
 //            when(passwordEncoder.matches("1234", anyString()))
 //                    .thenReturn(false);
 
-            when(userRepository.findByUsernameOrMail("toto","toto"))
+            when(userRepository.findByUsernameOrMail("toto", "toto"))
                     .thenReturn(expectedUser);
 
             assertEquals(expectedUser, userService.authenticateUser("toto", "1234"));
         }
+
         @Test
         void shouldReturnEmpty_whenWrongPassword() {
             var bddUser = Optional.of(new User(
@@ -101,7 +96,7 @@ public class UserServiceTest {
             when(passwordEncoder.matches("1234", "encodedPassword"))
                     .thenReturn(false);
 
-            when(userRepository.findByUsernameOrMail("toto","toto"))
+            when(userRepository.findByUsernameOrMail("toto", "toto"))
                     .thenReturn(bddUser);
 
             assertEquals(expectedUser, userService.authenticateUser("toto", "1234"));
@@ -153,4 +148,67 @@ public class UserServiceTest {
                     .verifyComplete();
         }
     }
+
+//    @Nested
+//    class UpdateData {
+//        @Test
+//        void shouldReturnUser_whenKnownInDatabase() {
+//            var body = new UserController.UserInfoDto(
+//                    "toto",
+//                    "toto@mail.com",
+//                    "",
+//                    "test",
+//                    "test",
+//                    "",
+//                    "",
+//                    "",
+//                    ""
+//            );
+//            var bddUser = Optional.of(new User(
+//                    1,
+//                    "toto",
+//                    "encodedPassword",
+//                    "toto@mail.com",
+//                    "",
+//                    "",
+//                    "",
+//                    "",
+//                    "",
+//                    "",
+//                    ""
+//            ));
+//            var expectedUser = Optional.of(new User(
+//                    1,
+//                    "toto",
+//                    "####",
+//                    "toto@mail.com",
+//                    "test",
+//                    "test",
+//                    "",
+//                    "",
+//                    "",
+//                    "",
+//                    ""
+//            ));
+//            when(userRepository.findByUsernameOrMail("toto", "toto@mail.com"))
+//                    .thenReturn(bddUser);
+//            when(userRepository.save(new User(
+//                            1,
+//                            "toto",
+//                            "encodedPassword",
+//                            "toto@mail.com",
+//                            "test",
+//                            "test",
+//                            "",
+//                            "",
+//                            "",
+//                            "",
+//                            ""
+//                    ))
+//            )
+//                    .thenReturn(null);
+//
+//            assertEquals(expectedUser, userService.updateUserInfo(body));
+//        }
+//    }
 }

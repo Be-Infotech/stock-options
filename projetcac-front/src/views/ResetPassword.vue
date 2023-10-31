@@ -84,7 +84,6 @@ input:-moz-placeholder { text-align:center; }
           <input id="username" type="text" v-model="username" placeholder="username" required>
         </div>
         <div>
-
           <button id="submit">Send</button>
         </div>
         <div>
@@ -93,7 +92,6 @@ input:-moz-placeholder { text-align:center; }
         </div>
         <div>
           <router-link to="/" id="redirection">Log in</router-link>
-
         </div>
       </form>
     </div>
@@ -103,37 +101,35 @@ input:-moz-placeholder { text-align:center; }
 
 
 <script>
-
 import {loginApi} from "@/api";
 import router from "@/router";
 import {resetPasswordApi} from "@/api/api";
-
 
 export default {
   name:"ResetPass",
   data() {
     return{
       username:"",
-
       password:"",
       error :""
     }
   },
   methods : {
     handleSubmit() {
-      const response = resetPasswordApi(this.username);
-      response
-          .then(data =>{
-            if (typeof data === "string"){
-              this.password = data
-            }
-            else if (typeof data === 'number'){
-              this.error = data;
-            }
+      resetPasswordApi(this.username)
+          .then(response =>{
+            console.log(response);
+            this.password = response;
+            this.error = null;
           })
+          .catch(error =>{
+            console.log(error);
+            this.error = error;
+            this.password = null;
+          })
+
     },
   },
-
 
 }
 </script>

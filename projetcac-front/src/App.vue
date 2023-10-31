@@ -1,7 +1,17 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 
+</script>
+
+</script>
+
 <template>
   <RouterView />
 </template>
+<style>
+ body{
+   margin: 0;
+   font-family: Roboto, sans-serif;
+ }
+</style>
 
