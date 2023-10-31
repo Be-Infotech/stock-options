@@ -39,11 +39,6 @@ public class UserController {
         String password;
     }
     @Value
-    public static class ResetPasswordDto {
-        String usernameOrMail;
-    }
-
-    @Value
     public static class UserInfoDto{
         Integer userId;
         String username;
