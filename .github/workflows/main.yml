@@ -33,5 +33,9 @@ jobs:
         run: |
           docker build -t backend .
         working-directory: ./projetcac-back
+      - name: Build Docker image
+        run: |
+          docker build -t frontend . 
+        working-directory: ./projetcac-front
       
     
