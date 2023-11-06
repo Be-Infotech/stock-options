@@ -27,11 +27,13 @@ jobs:
           npm install
           npm run test:unit
         working-directory: ./projetcac-front
-      - name: Set up Docker
-        uses: actions/setup-docker@v2
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install docker.io
       - name: Build Docker image
         run: |
-          docker build . --file Dockerfile -t backend .
+          docker build -t backend .
         working-directory: ./.github/workflows
       
     
