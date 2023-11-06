@@ -4,7 +4,7 @@ FROM openjdk:17
 WORKDIR /app
 
 # Copiez le fichier JAR de votre application dans le conteneur
-COPY projetcac-back.jar app.jar
+COPY target/projetcac-back-0.0.1-SNAPSHOT.jar app.jar
 
 # Exposez le port sur lequel l'application écoute (par défaut 8080)
 EXPOSE 8080
