@@ -31,5 +31,7 @@ jobs:
         uses: actions/setup-docker@v2
       - name: Build Docker image
         run: |
-          docker build -t backend .
+          docker build . --file Dockerfile -t backend .
         working-directory: .github/workflows
+      
+    
