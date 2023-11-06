@@ -5,6 +5,11 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build:{
+    rollupOptions: {
+      external: ['public/images/tableau-de-bord.png','public/images/utilisateur.png']
+    }
+  },
   plugins: [
     vue(),
   ],
