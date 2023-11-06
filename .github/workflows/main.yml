@@ -32,4 +32,4 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t backend .
-        working-directory: ./.github/workflows
+        working-directory: .github/workflows
