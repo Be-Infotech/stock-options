@@ -29,11 +29,11 @@ jobs:
         working-directory: ./projetcac-front
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      - name: Build Docker image
+      - name: Build back Docker image
         run: |
           docker build -t backend .
         working-directory: ./projetcac-back
-      - name: Build Docker image
+      - name: Build front Docker image
         run: |
           docker build -t frontend . 
         working-directory: ./projetcac-front
