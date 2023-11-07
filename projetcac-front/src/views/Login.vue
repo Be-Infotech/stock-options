@@ -110,7 +110,7 @@ input:-moz-placeholder {
 
             <p id="msgError" v-if="error">{{ error }}</p>
           <p>Forget your password ?
-            <RouterLink id="redirection" to="/resetPassword">Reset here</RouterLink>
+            <router-link  id="redirection" to="/resetPassword">Reset here</router-link>
           </p>
 
         </div>
